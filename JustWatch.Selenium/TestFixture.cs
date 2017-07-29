@@ -56,23 +56,19 @@ namespace JustWatch.Selenium
             _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]")));
 
             // Click on Swiss Military image
-            var manufacturerImage = _driver.FindElement(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]"));
-            manufacturerImage.Click();
+            _driver.FindElement(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]")).Click();
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.name>a")));
 
             // Click on first product label
-            var productLabel = _driver.FindElements(By.CssSelector("div.name>a")).First();
-            productLabel.Click();
+            _driver.FindElements(By.CssSelector("div.name>a")).First().Click();
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("#button-cart")));
 
             // Click on cart button
-            var button = _driver.FindElement(By.CssSelector("#button-cart"));
-            button.Click();
+            _driver.FindElement(By.CssSelector("#button-cart")).Click();
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector(".testbutton")));
 
             // Click on order button
-            var orderButton = _driver.FindElements(By.CssSelector(".testbutton")).First();
-            orderButton.Click();
+            _driver.FindElements(By.CssSelector(".testbutton")).First().Click();
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("input#input-payment-firstname")));
 
             // Populate payment form
