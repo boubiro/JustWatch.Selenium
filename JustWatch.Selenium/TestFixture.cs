@@ -50,18 +50,16 @@ namespace JustWatch.Selenium
 
             // Open brand menu
             var manufacturersMenu = _driver.FindElement(By.CssSelector("nav#megamenu-menu ul.navbar-nav li.dropdown a[href=\"/brands/\"]"));
-            Assert.NotNull(manufacturersMenu, "manufacturersMenu");            
             new Actions(_driver).MoveToElement(manufacturersMenu).Perform();
             _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]")));
 
             // Click on Swiss Military image
             var manufacturerImage = _driver.FindElement(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]"));
-            Assert.NotNull(manufacturerImage, "manufacturerImage");
             manufacturerImage.Click();
             _wait.Until(ExpectedConditions.StalenessOf(manufacturersMenu));
 
             // Click on first product label
-            var productLabel = _driver.FindElements(By.CssSelector("div.product>div.product-about>div.name>a")).FirstOrDefault();
+            var productLabel = _driver.FindElements(By.CssSelector("div.name>a")).First();
             Assert.NotNull(productLabel, "productLabel");
             productLabel.Click();
             _wait.Until(ExpectedConditions.StalenessOf(productLabel));
