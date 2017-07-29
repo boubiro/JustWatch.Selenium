@@ -39,7 +39,7 @@ namespace JustWatch.Selenium
                 _driver.Title);            
         }
 
-        [TestCase, Ignore]
+        [TestCase, Ignore("not stable")]
         public void ShouldBuyProduct()
         {
             // Open web site
