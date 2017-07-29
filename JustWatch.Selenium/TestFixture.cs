@@ -42,7 +42,7 @@ namespace JustWatch.Selenium
             
             Assert.AreEqual(
                 "Justwatches — интернет-магазин наручных часов в Санкт-Петербурге", 
-                _driver.Title);            
+                _driver.Title);
         }
 
         [TestCase]
@@ -66,10 +66,12 @@ namespace JustWatch.Selenium
 
             // Click on cart button
             _driver.FindElement(By.CssSelector("#button-cart")).Click();
+            Assert.Greater(ActiveAjaxCalls(_driver), 0, "Ajax request hadn't been made");
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("a.testbutton")));
 
             // Click on order button
             _driver.FindElements(By.CssSelector("a.testbutton")).First().Click();
+            //_driver.FindElement(By.CssSelector(".top-panel .container .row .right a:last-child")).Click();
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("input#input-payment-firstname")));
 
             // Populate payment form
@@ -96,6 +98,11 @@ namespace JustWatch.Selenium
             var readyState = ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState");
 
             return readyState.ToString() == "complete";
+        }
+
+        public long ActiveAjaxCalls(IWebDriver driver)
+        {
+            return (long)(driver as IJavaScriptExecutor).ExecuteScript("return jQuery.active");
         }
     }
 }
