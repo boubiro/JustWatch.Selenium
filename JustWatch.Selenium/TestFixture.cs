@@ -65,10 +65,10 @@ namespace JustWatch.Selenium
 
             // Click on cart button
             _driver.FindElement(By.CssSelector("#button-cart")).Click();
-            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector(".testbutton")));
+            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("a.testbutton")));
 
             // Click on order button
-            _driver.FindElements(By.CssSelector(".testbutton")).First().Click();
+            _driver.FindElements(By.CssSelector("a.testbutton")).First().Click();
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("input#input-payment-firstname")));
 
             // Populate payment form
