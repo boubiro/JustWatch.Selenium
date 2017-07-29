@@ -69,7 +69,7 @@ namespace JustWatch.Selenium
             _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("div.mcartdiv")));
 
             // Click on order button
-            var orderButton = _driver.FindElements(By.CssSelector("div.mcartdiv a.testbutton")).First();
+            var orderButton = _driver.FindElements(By.CssSelector("a.testbutton")).First();
             orderButton.Click();
             _wait.Until(ExpectedConditions.StalenessOf(orderButton));
 
