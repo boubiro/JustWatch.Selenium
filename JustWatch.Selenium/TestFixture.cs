@@ -12,6 +12,7 @@ namespace JustWatch.Selenium
     public class TestFixture
     {
         private IWebDriver _driver;
+        private IWait<IWebDriver> _wait;
 
         [SetUp]
         public void SetUp()
@@ -21,11 +22,13 @@ namespace JustWatch.Selenium
             driverService.HideCommandPromptWindow = true;
             driverService.SuppressInitialDiagnosticInformation = true;
             _driver = new FirefoxDriver(driverService, new FirefoxOptions(), TimeSpan.FromSeconds(60));
+            
+            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
         }
 
         [TearDown]
         public void TearDown()
-        {
+        {            
             _driver.Quit();
         }
 
@@ -47,29 +50,33 @@ namespace JustWatch.Selenium
 
             // Open brand menu
             var manufacturersMenu = _driver.FindElement(By.CssSelector("nav#megamenu-menu ul.navbar-nav li.dropdown a[href=\"/brands/\"]"));
-            var manufacturerImage = _driver.FindElement(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]"));
+            Assert.NotNull(manufacturersMenu, "manufacturersMenu");            
             new Actions(_driver).MoveToElement(manufacturersMenu).Perform();
-            //WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
-            //wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]")));
+            _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]")));
 
             // Click on Swiss Military image
+            var manufacturerImage = _driver.FindElement(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]"));
+            Assert.NotNull(manufacturerImage, "manufacturerImage");
             manufacturerImage.Click();
-            //wait.Until(ExpectedConditions.StalenessOf(manufacturersMenu));
+            _wait.Until(ExpectedConditions.StalenessOf(manufacturersMenu));
 
             // Click on first product label
             var productLabel = _driver.FindElements(By.CssSelector("div.product>div.product-about>div.name>a")).FirstOrDefault();
+            Assert.NotNull(productLabel, "productLabel");
             productLabel.Click();
-            //wait.Until(ExpectedConditions.StalenessOf(productLabel));
+            _wait.Until(ExpectedConditions.StalenessOf(productLabel));
 
             // Click on cart button
             var button = _driver.FindElement(By.CssSelector("a#button-cart"));
+            Assert.NotNull(button, "button");
             button.Click();
-            //wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("div.mcartdiv")));
+            _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("div.mcartdiv")));
 
             // Click on order button
             var orderButton = _driver.FindElements(By.CssSelector("div.mcartdiv a.testbutton")).FirstOrDefault();
+            Assert.NotNull(orderButton, "orderButton");
             orderButton.Click();
-            //wait.Until(ExpectedConditions.StalenessOf(orderButton));
+            _wait.Until(ExpectedConditions.StalenessOf(orderButton));
 
             // Populate payment form
             _driver.FindElement(By.CssSelector("input#input-payment-firstname")).SendKeys("Владимир");
