@@ -22,6 +22,7 @@ namespace JustWatch.Selenium
             driverService.FirefoxBinaryPath = @"C:\Program Files (x86)\Mozilla Firefox\firefox.exe";
             driverService.HideCommandPromptWindow = true;
             driverService.SuppressInitialDiagnosticInformation = true;
+            
             _driver = new FirefoxDriver(driverService, new FirefoxOptions(), TimeSpan.FromSeconds(60));
             
             _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
@@ -57,26 +58,22 @@ namespace JustWatch.Selenium
             // Click on Swiss Military image
             var manufacturerImage = _driver.FindElement(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]"));
             manufacturerImage.Click();
-            _wait.Until(ExpectedConditions.StalenessOf(manufacturersMenu));
-            Thread.Sleep(9999);
+            WaitForPageToLoad();
 
             // Click on first product label
             var productLabel = _driver.FindElements(By.CssSelector("div.name>a")).First();
             productLabel.Click();
-            _wait.Until(ExpectedConditions.StalenessOf(productLabel));
-            Thread.Sleep(9999);
+            WaitForPageToLoad();
 
             // Click on cart button
             var button = _driver.FindElement(By.CssSelector("#button-cart"));
             button.Click();
-            _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("div.mcartdiv")));
-            Thread.Sleep(9999);
+            WaitForPageToLoad();
 
             // Click on order button
             var orderButton = _driver.FindElements(By.CssSelector("a.testbutton")).First();
             orderButton.Click();
-            _wait.Until(ExpectedConditions.StalenessOf(orderButton));
-            Thread.Sleep(9999);
+            WaitForPageToLoad();
 
             // Populate payment form
             _driver.FindElement(By.CssSelector("input#input-payment-firstname")).SendKeys("Владимир");
@@ -90,6 +87,18 @@ namespace JustWatch.Selenium
             _driver.FindElement(By.CssSelector("input[name=\"payment_agree\"]")).Click();
             
             //_driver.FindElement(By.CssSelector("button#button-go")).Click();
+        }
+
+        public void WaitForPageToLoad()
+        {
+            _wait.Until(driver => DocumentIsReady(driver));
+        }
+
+        public bool DocumentIsReady(IWebDriver driver)
+        {
+            var readyState = ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState");
+
+            return readyState.ToString() == "complete";
         }
     }
 }
