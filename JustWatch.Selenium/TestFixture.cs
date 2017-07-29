@@ -58,22 +58,22 @@ namespace JustWatch.Selenium
             // Click on Swiss Military image
             var manufacturerImage = _driver.FindElement(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]"));
             manufacturerImage.Click();
-            WaitForPageToLoad();
+            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.name>a")));
 
             // Click on first product label
             var productLabel = _driver.FindElements(By.CssSelector("div.name>a")).First();
             productLabel.Click();
-            WaitForPageToLoad();
+            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("#button-cart")));
 
             // Click on cart button
             var button = _driver.FindElement(By.CssSelector("#button-cart"));
             button.Click();
-            WaitForPageToLoad();
+            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("a.testbutton")));
 
             // Click on order button
             var orderButton = _driver.FindElements(By.CssSelector("a.testbutton")).First();
             orderButton.Click();
-            WaitForPageToLoad();
+            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("input#input-payment-firstname")));
 
             // Populate payment form
             _driver.FindElement(By.CssSelector("input#input-payment-firstname")).SendKeys("Владимир");
