@@ -5,7 +5,6 @@ using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Linq;
-using System.Threading;
 
 namespace JustWatch.Selenium
 {
@@ -22,9 +21,11 @@ namespace JustWatch.Selenium
             driverService.FirefoxBinaryPath = @"C:\Program Files (x86)\Mozilla Firefox\firefox.exe";
             driverService.HideCommandPromptWindow = true;
             driverService.SuppressInitialDiagnosticInformation = true;
-            
-            _driver = new FirefoxDriver(driverService, new FirefoxOptions(), TimeSpan.FromSeconds(60));
-            
+
+            var options = new FirefoxOptions();
+            options.SetPreference("javascript.enabled", true);
+
+            _driver = new FirefoxDriver(driverService, options, TimeSpan.FromSeconds(60));
             _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(30));
         }
 
