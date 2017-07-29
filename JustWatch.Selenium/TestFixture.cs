@@ -29,7 +29,7 @@ namespace JustWatch.Selenium
                 driver.Title);
 
             //Close the browser
-            driver.Close();
+            driver.Quit();
         }
     }
 }
