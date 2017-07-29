@@ -25,7 +25,7 @@ namespace JustWatch.Selenium
             
             _driver = new FirefoxDriver(driverService, new FirefoxOptions(), TimeSpan.FromSeconds(60));
             
-            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(30));
         }
 
         [TearDown]
