@@ -60,19 +60,16 @@ namespace JustWatch.Selenium
 
             // Click on first product label
             var productLabel = _driver.FindElements(By.CssSelector("div.name>a")).First();
-            Assert.NotNull(productLabel, "productLabel");
             productLabel.Click();
             _wait.Until(ExpectedConditions.StalenessOf(productLabel));
 
             // Click on cart button
-            var button = _driver.FindElement(By.CssSelector("a#button-cart"));
-            Assert.NotNull(button, "button");
+            var button = _driver.FindElement(By.CssSelector("#button-cart"));
             button.Click();
             _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("div.mcartdiv")));
 
             // Click on order button
-            var orderButton = _driver.FindElements(By.CssSelector("div.mcartdiv a.testbutton")).FirstOrDefault();
-            Assert.NotNull(orderButton, "orderButton");
+            var orderButton = _driver.FindElements(By.CssSelector("div.mcartdiv a.testbutton")).First();
             orderButton.Click();
             _wait.Until(ExpectedConditions.StalenessOf(orderButton));
 
