@@ -5,6 +5,7 @@ using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace JustWatch.Selenium
 {
@@ -57,21 +58,25 @@ namespace JustWatch.Selenium
             var manufacturerImage = _driver.FindElement(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]"));
             manufacturerImage.Click();
             _wait.Until(ExpectedConditions.StalenessOf(manufacturersMenu));
+            Thread.Sleep(9999);
 
             // Click on first product label
             var productLabel = _driver.FindElements(By.CssSelector("div.name>a")).First();
             productLabel.Click();
             _wait.Until(ExpectedConditions.StalenessOf(productLabel));
+            Thread.Sleep(9999);
 
             // Click on cart button
             var button = _driver.FindElement(By.CssSelector("#button-cart"));
             button.Click();
             _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("div.mcartdiv")));
+            Thread.Sleep(9999);
 
             // Click on order button
             var orderButton = _driver.FindElements(By.CssSelector("a.testbutton")).First();
             orderButton.Click();
             _wait.Until(ExpectedConditions.StalenessOf(orderButton));
+            Thread.Sleep(9999);
 
             // Populate payment form
             _driver.FindElement(By.CssSelector("input#input-payment-firstname")).SendKeys("Владимир");
