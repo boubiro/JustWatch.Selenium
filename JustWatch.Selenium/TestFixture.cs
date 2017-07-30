@@ -32,7 +32,7 @@ namespace JustWatch.Selenium
             options.SetLoggingPreference(LogType.Browser, LogLevel.Warning);
 
             _driver = new FirefoxDriver(driverService, options, TimeSpan.FromSeconds(60));
-            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(30));
+            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
         }
 
         [TearDown]
@@ -73,7 +73,7 @@ namespace JustWatch.Selenium
             // Click on cart button
             //_driver.ExecuteJavaScript("$('#button-cart').click();");
             _driver.FindElement(By.CssSelector("#button-cart")).Click();
-            for (var i = 0; i < 5; i++)
+            for (var i = 0; i < 3; i++)
             {
                 try
                 {
