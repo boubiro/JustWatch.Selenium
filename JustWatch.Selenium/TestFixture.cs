@@ -2,8 +2,11 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.Events;
+using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -26,6 +29,7 @@ namespace JustWatch.Selenium
 
             var options = new FirefoxOptions();
             options.SetPreference("javascript.enabled", true);
+            options.SetLoggingPreference(LogType.Browser, LogLevel.Warning);
 
             _driver = new FirefoxDriver(driverService, options, TimeSpan.FromSeconds(60));
             _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(30));
@@ -66,12 +70,17 @@ namespace JustWatch.Selenium
             _driver.FindElements(By.CssSelector("div.name>a")).First().Click();
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("#button-cart")));
 
+            //var logs = _driver.Manage().Logs;
+            //var log = logs.GetLog(LogType.Browser);
+
             // Click on cart button
-            var click = ExecuteJavaScript("return $('#button-cart')[0].click");
+            var click = _driver.ExecuteJavaScript<object>("return $('#button-cart')[0].click");
             Assert.NotNull(click);
-            var fn = (long)ExecuteJavaScript("return $._data( $('#button-cart')[0], 'events').click.length");
-            Assert.AreEqual(1, fn, "No click handler for #button-cart"); 
-            _driver.FindElement(By.CssSelector("#button-cart")).Click();
+            var fn = _driver.ExecuteJavaScript<object>("return $._data( $('#button-cart')[0], 'events').click.length");
+            Assert.AreEqual(1, fn, "No click handler for #button-cart");
+            _driver.ExecuteJavaScript("$('#button-cart').click();");
+
+            //_driver.FindElement(By.CssSelector("#button-cart")).Click();
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("a.testbutton")));
 
             // Click on order button
@@ -100,7 +109,7 @@ namespace JustWatch.Selenium
 
         public bool DocumentIsReady(IWebDriver driver)
         {
-            return ExecuteJavaScript("return document.readyState").ToString() == "complete";
+            return driver.ExecuteJavaScript<string>("return document.readyState") == "complete";
         }
 
         public long ActiveAjaxCalls(IWebDriver driver)
@@ -108,17 +117,17 @@ namespace JustWatch.Selenium
             return (long)(driver as IJavaScriptExecutor).ExecuteScript("return jQuery.active");
         }
 
-        public object ExecuteJavaScript(string javascript)
-        {
-            return (_driver as IJavaScriptExecutor).ExecuteScript(javascript);
-        }
-
         public void MaximizeWindow()
         {
-            var availableWidth = (long)ExecuteJavaScript("return window.screen.availWidth");
-            var availableHeight = (long)ExecuteJavaScript("return window.screen.availHeight");
+            var availableWidth = _driver.ExecuteJavaScript<long>("return window.screen.availWidth");
+            var availableHeight = _driver.ExecuteJavaScript<long>("return window.screen.availHeight");
 
             _driver.Manage().Window.Size = new System.Drawing.Size((int)availableWidth, (int)availableHeight);
+        }
+
+        private void TakeScreenshotOnException()
+        {
+            _driver.TakeScreenshot().SaveAsFile("C:\\error.png", ScreenshotImageFormat.Png);
         }
     }
 }
