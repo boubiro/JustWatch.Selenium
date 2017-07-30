@@ -72,7 +72,6 @@ namespace JustWatch.Selenium
 
             // Click on order button
             _driver.FindElements(By.CssSelector("a.testbutton")).First().Click();
-            //_driver.FindElement(By.CssSelector(".top-panel .container .row .right a:last-child")).Click();
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("input#input-payment-firstname")));
 
             // Populate payment form
@@ -81,14 +80,14 @@ namespace JustWatch.Selenium
             _driver.FindElement(By.CssSelector("input#input-payment-email")).SendKeys("stateduma@.ru");
             _driver.FindElement(By.CssSelector("input#input-payment-telephone")).SendKeys("88002002316");
             var select = new SelectElement(_driver.FindElement(By.CssSelector("select#input-payment-zone")));
-            select.DeselectByText("Москва");
+            select.SelectByText("Москва");
             _driver.FindElement(By.CssSelector("input#input-payment-city")).SendKeys("Москва");
             _driver.FindElement(By.CssSelector("input#input-payment-address-1")).SendKeys("Кремль, к1");
             _driver.FindElement(By.CssSelector("input[name=\"agree\"]")).Click();
             _driver.FindElement(By.CssSelector("input[name=\"payment_agree\"]")).Click();
 
             _driver.FindElement(By.CssSelector("input#button-go")).Click();
-            WaitForPageToLoad();
+            _wait.Until(ExpectedConditions.UrlContains("route=checkout/success"));
         }
 
         public void WaitForPageToLoad()
