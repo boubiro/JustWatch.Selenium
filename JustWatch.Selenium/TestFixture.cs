@@ -76,8 +76,6 @@ namespace JustWatch.Selenium
             // Click on cart button
             var click = _driver.ExecuteJavaScript<object>("return $('#button-cart')[0].click");
             Assert.NotNull(click);
-            var fn = _driver.ExecuteJavaScript<object>("return $._data( $('#button-cart')[0], 'events').click.length");
-            Assert.AreEqual(1, fn, "No click handler for #button-cart");
             _driver.ExecuteJavaScript("$('#button-cart').click();");
 
             //_driver.FindElement(By.CssSelector("#button-cart")).Click();
