@@ -5,6 +5,8 @@ using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Linq;
+using System.Text;
+using System.Threading;
 
 namespace JustWatch.Selenium
 {
@@ -48,7 +50,7 @@ namespace JustWatch.Selenium
         [TestCase]
         public void ShouldBuyProduct()
         {
-            // Open web site
+            // Open web site            
             _driver.Navigate().GoToUrl("https://justwatches.ru");
 
             // Open brand menu
@@ -66,7 +68,6 @@ namespace JustWatch.Selenium
 
             // Click on cart button
             _driver.FindElement(By.CssSelector("#button-cart")).Click();
-            Assert.Greater(ActiveAjaxCalls(_driver), 0, "Ajax request hadn't been made");
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("a.testbutton")));
 
             // Click on order button
@@ -79,13 +80,15 @@ namespace JustWatch.Selenium
             _driver.FindElement(By.CssSelector("input#input-payment-lastname")).SendKeys("Владимирович");
             _driver.FindElement(By.CssSelector("input#input-payment-email")).SendKeys("stateduma@.ru");
             _driver.FindElement(By.CssSelector("input#input-payment-telephone")).SendKeys("88002002316");
-            new SelectElement(_driver.FindElement(By.CssSelector("select#input-payment-zone"))).SelectByText("Москва");
+            var select = new SelectElement(_driver.FindElement(By.CssSelector("select#input-payment-zone")));
+            select.DeselectByText("Москва");
             _driver.FindElement(By.CssSelector("input#input-payment-city")).SendKeys("Москва");
             _driver.FindElement(By.CssSelector("input#input-payment-address-1")).SendKeys("Кремль, к1");
             _driver.FindElement(By.CssSelector("input[name=\"agree\"]")).Click();
             _driver.FindElement(By.CssSelector("input[name=\"payment_agree\"]")).Click();
-            
-            //_driver.FindElement(By.CssSelector("button#button-go")).Click();
+
+            _driver.FindElement(By.CssSelector("input#button-go")).Click();
+            WaitForPageToLoad();
         }
 
         public void WaitForPageToLoad()
@@ -103,6 +106,19 @@ namespace JustWatch.Selenium
         public long ActiveAjaxCalls(IWebDriver driver)
         {
             return (long)(driver as IJavaScriptExecutor).ExecuteScript("return jQuery.active");
+        }
+
+        public object ExecuteJavaScript(string javascript)
+        {
+            return (_driver as IJavaScriptExecutor).ExecuteScript(javascript);
+        }
+
+        public void MaximizeWindow()
+        {
+            var availableWidth = (long)ExecuteJavaScript("return window.screen.availWidth");
+            var availableHeight = (long)ExecuteJavaScript("return window.screen.availHeight");
+
+            _driver.Manage().Window.Size = new System.Drawing.Size((int)availableWidth, (int)availableHeight);
         }
     }
 }
