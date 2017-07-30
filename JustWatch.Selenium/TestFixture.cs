@@ -67,6 +67,8 @@ namespace JustWatch.Selenium
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("#button-cart")));
 
             // Click on cart button
+            var fn = (long)ExecuteJavaScript("return $._data( $('#button-cart')[0], 'events').click.length");
+            Assert.AreEqual(1, fn, "No click handler for #button-cart"); 
             _driver.FindElement(By.CssSelector("#button-cart")).Click();
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("a.testbutton")));
 
@@ -79,8 +81,7 @@ namespace JustWatch.Selenium
             _driver.FindElement(By.CssSelector("input#input-payment-lastname")).SendKeys("Владимирович");
             _driver.FindElement(By.CssSelector("input#input-payment-email")).SendKeys("stateduma@.ru");
             _driver.FindElement(By.CssSelector("input#input-payment-telephone")).SendKeys("88002002316");
-            var select = new SelectElement(_driver.FindElement(By.CssSelector("select#input-payment-zone")));
-            select.SelectByText("Москва");
+            new SelectElement(_driver.FindElement(By.CssSelector("select#input-payment-zone"))).SelectByText("Москва");
             _driver.FindElement(By.CssSelector("input#input-payment-city")).SendKeys("Москва");
             _driver.FindElement(By.CssSelector("input#input-payment-address-1")).SendKeys("Кремль, к1");
             _driver.FindElement(By.CssSelector("input[name=\"agree\"]")).Click();
@@ -97,9 +98,7 @@ namespace JustWatch.Selenium
 
         public bool DocumentIsReady(IWebDriver driver)
         {
-            var readyState = ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState");
-
-            return readyState.ToString() == "complete";
+            return ExecuteJavaScript("return document.readyState").ToString() == "complete";
         }
 
         public long ActiveAjaxCalls(IWebDriver driver)
