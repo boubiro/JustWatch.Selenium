@@ -71,8 +71,8 @@ namespace JustWatch.Selenium
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("#button-cart")));
 
             // Click on cart button
-            //_driver.ExecuteJavaScript("$('#button-cart').click();");
-            _driver.FindElement(By.CssSelector("#button-cart")).Click();
+            _driver.ExecuteJavaScript("$('#button-cart').click();");
+            //_driver.FindElement(By.CssSelector("#button-cart")).Click();
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("a.testbutton")));
 
             // Click on order button
