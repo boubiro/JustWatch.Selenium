@@ -67,6 +67,8 @@ namespace JustWatch.Selenium
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("#button-cart")));
 
             // Click on cart button
+            var click = ExecuteJavaScript("return $('#button-cart')[0].click");
+            Assert.NotNull(click);
             var fn = (long)ExecuteJavaScript("return $._data( $('#button-cart')[0], 'events').click.length");
             Assert.AreEqual(1, fn, "No click handler for #button-cart"); 
             _driver.FindElement(By.CssSelector("#button-cart")).Click();
