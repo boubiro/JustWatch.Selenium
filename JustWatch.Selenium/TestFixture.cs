@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using JustWatch.Selenium.Pages;
+using JustWatch.Selenium.Controls;
 
 namespace JustWatch.Selenium
 {
@@ -60,11 +61,10 @@ namespace JustWatch.Selenium
 
             // Open brand menu
             var homePage = new HomePage(_driver);
-            var manufacturersMenu = homePage.MainMenu.GetMainMenuItemByUrl("/brands/");
-            new Actions(_driver).MoveToElement(manufacturersMenu).Perform();
+            var menuItems = homePage.MainMenu.OpenMenu("Бренды");
 
             // Click on Swiss Military image
-            homePage.MainMenu.GetMenuSubItemByTitle("Swiss Military").Click();
+            menuItems.First(item => item.Text == "Swiss Military").Image.Click();
             //_wait.Until(ExpectedConditions.UrlContains("swiss-military"));
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.name>a")));
 

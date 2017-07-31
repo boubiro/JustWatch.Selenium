@@ -1,4 +1,9 @@
-﻿using OpenQA.Selenium;
+﻿using JustWatch.Selenium.Controls;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace JustWatch.Selenium.Pages
 {
@@ -11,22 +16,21 @@ namespace JustWatch.Selenium.Pages
             _webDriver = webDriver;
         }
 
-        public IWebElement GetMainMenuItemByUrl(string url)
+        public IEnumerable<MenuButton> GetMenuButtons()
         {
-            return _webDriver.FindElement(By.CssSelector(
-                $"nav#megamenu-menu ul.navbar-nav li.dropdown a[href=\"{url}\"]"));
+            return _webDriver.FindElements(By.CssSelector("nav#megamenu-menu ul.navbar-nav li.dropdown"))
+                .Select(element => new MenuButton(_webDriver, element));
         }
 
-        public IWebElement GetMenuItemByTitle(string title)
+        public IEnumerable<MenuItem> OpenMenu(string title)
         {
-            return _webDriver.FindElement(By.CssSelector(
-                $"nav#megamenu-menu ul.navbar-nav li.dropdown a.dropdown-toggle img.megamenu-thumb[title=\"{title}\"]"));
-        }
+            var menuButton = GetMenuButtons().First(button => button.Title == title);
 
-        public IWebElement GetMenuSubItemByTitle(string title)
-        {
-            return _webDriver.FindElement(
-                By.CssSelector($"li.megamenu-parent-block a.megamenu-parent-img img[title=\"{title}\"]"));
+            new Actions(_webDriver).MoveToElement(menuButton.Link).Perform();
+
+            return menuButton.ToWebElement()
+                .FindElements(By.CssSelector("div.dropdown-menu ul li.megamenu-parent-block"))
+                .Select(element => new MenuItem(_webDriver, element));
         }
     }
 }
