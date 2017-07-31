@@ -47,6 +47,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pages\MainMenu.cs" />
     <Compile Include="Pages\ManufacturerPage.cs" />
     <Compile Include="Pages\ProductPage.cs" />
     <Compile Include="Pages\HomePage.cs" />
