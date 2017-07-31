@@ -62,36 +62,38 @@ namespace JustWatch.Selenium
             var homePage = new HomePage(_driver);
             var manufacturersMenu = homePage.GetMainMenuItemByUrl("/brands/");
             new Actions(_driver).MoveToElement(manufacturersMenu).Perform();
-            _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]")));
+            //_wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]")));
 
             // Click on Swiss Military image
             homePage.GetMenuSubItemByTitle("Swiss Military").Click();
-            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.name>a")));
+            _wait.Until(ExpectedConditions.UrlContains("swiss-military"));
+            //_wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.name>a")));
 
             // Click on first product label
             var manufacturerPage = new ManufacturerPage(_driver);
             manufacturerPage.GetProductTitles().First().Click();
-            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("#button-cart")));
+            _wait.Until(ExpectedConditions.UrlContains("watch"));
+            //_wait.Until(ExpectedConditions.ElementExists(By.CssSelector("#button-cart")));
 
             // Click on cart button
             var productPage = new ProductPage(_driver);
-            productPage.AddToCartButton.Click();
             for (var i = 0; i < 3; i++)
             {
                 try
                 {
-                    _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("a.testbutton")));
+                    productPage.AddToCartButton.Click();
+                    _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.mcartdiv")));
                     break;
                 }
                 catch (WebDriverTimeoutException)
                 {
-                    productPage.AddToCartButton.Click();
+                    continue;
                 }
             }
 
             // Click on order button
-            _driver.FindElements(By.CssSelector("a.testbutton")).First().Click();
-            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("input#input-payment-firstname")));
+            productPage.SubmitOrderButton.Click();
+            _wait.Until(ExpectedConditions.UrlContains("fast-order"));
 
             // Populate payment form
             var orderPage = new OrderPage(_driver);
