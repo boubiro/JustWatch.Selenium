@@ -65,13 +65,14 @@ namespace JustWatch.Selenium
 
             // Click on Swiss Military image
             homePage.MainMenu.GetMenuSubItemByTitle("Swiss Military").Click();
-            _wait.Until(ExpectedConditions.UrlContains("swiss-military"));
+            //_wait.Until(ExpectedConditions.UrlContains("swiss-military"));
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.name>a")));
 
             // Click on first product label
             var manufacturerPage = new ManufacturerPage(_driver);
             manufacturerPage.GetProductTitles().First().Click();
-            _wait.Until(ExpectedConditions.UrlContains("watch"));
+            //_wait.Until(ExpectedConditions.UrlContains("watch"));
+            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("#button-cart")));
 
             // Click on cart button
             var productPage = new ProductPage(_driver);
