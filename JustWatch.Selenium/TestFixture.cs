@@ -10,6 +10,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using JustWatch.Selenium.Pages;
 
 namespace JustWatch.Selenium
 {
@@ -41,7 +42,7 @@ namespace JustWatch.Selenium
             _driver.Quit();
         }
 
-        [TestCase]
+        [TestCase, Ignore("too simple")]
         public void ShouldNavigateToWebSite()
         {
             _driver.Navigate().GoToUrl("https://justwatches.ru");
@@ -58,21 +59,23 @@ namespace JustWatch.Selenium
             _driver.Navigate().GoToUrl("https://justwatches.ru");
 
             // Open brand menu
-            var manufacturersMenu = _driver.FindElement(By.CssSelector("nav#megamenu-menu ul.navbar-nav li.dropdown a[href=\"/brands/\"]"));
+            var homePage = new HomePage(_driver);
+            var manufacturersMenu = homePage.GetMainMenuItemByUrl("/brands/");
             new Actions(_driver).MoveToElement(manufacturersMenu).Perform();
             _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]")));
 
             // Click on Swiss Military image
-            _driver.FindElement(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]")).Click();
+            homePage.GetMenuSubItemByTitle("Swiss Military").Click();
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.name>a")));
 
             // Click on first product label
-            _driver.FindElements(By.CssSelector("div.name>a")).First().Click();
+            var manufacturerPage = new ManufacturerPage(_driver);
+            manufacturerPage.GetProductTitles().First().Click();
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("#button-cart")));
 
             // Click on cart button
-            //_driver.ExecuteJavaScript("$('#button-cart').click();");
-            _driver.FindElement(By.CssSelector("#button-cart")).Click();
+            var productPage = new ProductPage(_driver);
+            productPage.AddToCartButton.Click();
             for (var i = 0; i < 3; i++)
             {
                 try
@@ -82,8 +85,7 @@ namespace JustWatch.Selenium
                 }
                 catch (WebDriverTimeoutException)
                 {
-                    _driver.FindElement(By.CssSelector("#button-cart")).Click();
-                    continue;
+                    productPage.AddToCartButton.Click();
                 }
             }
 
@@ -92,23 +94,24 @@ namespace JustWatch.Selenium
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("input#input-payment-firstname")));
 
             // Populate payment form
-            _driver.FindElement(By.CssSelector("input#input-payment-firstname")).SendKeys("Владимир");
-            _driver.FindElement(By.CssSelector("input#input-payment-lastname")).SendKeys("Владимирович");
-            _driver.FindElement(By.CssSelector("input#input-payment-email")).SendKeys("stateduma@.ru");
-            _driver.FindElement(By.CssSelector("input#input-payment-telephone")).SendKeys("88002002316");
-            new SelectElement(_driver.FindElement(By.CssSelector("select#input-payment-zone"))).SelectByText("Москва");
-            _driver.FindElement(By.CssSelector("input#input-payment-city")).SendKeys("Москва");
-            _driver.FindElement(By.CssSelector("input#input-payment-address-1")).SendKeys("Кремль, к1");
-            _driver.FindElement(By.CssSelector("input[name=\"agree\"]")).Click();
-            _driver.FindElement(By.CssSelector("input[name=\"payment_agree\"]")).Click();
+            var orderPage = new OrderPage(_driver);
+            orderPage.FirstNameInput.SendKeys("Владимир");
+            orderPage.LastNameInput.SendKeys("Владимирович");
+            orderPage.EmailInput.SendKeys("stateduma@.ru");
+            orderPage.TelephoneInput.SendKeys("88002002316");
+            orderPage.ZoneSelect.SelectByText("Москва");
+            orderPage.CityInput.SendKeys("Москва");
+            orderPage.AddressInput.SendKeys("Кремль, к1");
+            orderPage.ShippingAgreementCheckbox.Click();
+            orderPage.PrivacyAgrementCheckbox.Click();
 
-            //_driver.FindElement(By.CssSelector("input#button-go")).Click();
+            //orderPage.SubmitOrderButton.Click();
             //_wait.Until(ExpectedConditions.UrlContains("route=checkout/success"));
         }
 
         public void WaitForPageToLoad()
         {
-            _wait.Until(driver => DocumentIsReady(driver));
+            _wait.Until(DocumentIsReady);
         }
 
         public bool DocumentIsReady(IWebDriver driver)
