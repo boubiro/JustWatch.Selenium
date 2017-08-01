@@ -70,7 +70,7 @@ namespace JustWatch.Selenium
 
             // Click on first product label
             var manufacturerPage = new ManufacturerPage(_driver);
-            manufacturerPage.GetProductTitles().First().Click();
+            manufacturerPage.GetProductCards().First().Title.Click();
             //_wait.Until(ExpectedConditions.UrlContains("watch"));
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("#button-cart")));
 

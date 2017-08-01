@@ -48,7 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\ControlBase.cs" />
+    <Compile Include="Controls\MenuButton.cs" />
     <Compile Include="Controls\MenuItem.cs" />
+    <Compile Include="Controls\ProductCard.cs" />
+    <Compile Include="Extensions\WebElementExtensions.cs" />
     <Compile Include="Pages\MainMenu.cs" />
     <Compile Include="Pages\ManufacturerPage.cs" />
     <Compile Include="Pages\ProductPage.cs" />

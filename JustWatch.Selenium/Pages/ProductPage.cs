@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using JustWatch.Selenium.Controls;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 
