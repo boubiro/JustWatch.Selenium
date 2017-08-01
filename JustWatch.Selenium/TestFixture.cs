@@ -6,12 +6,16 @@ using OpenQA.Selenium.Support.Events;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using JustWatch.Selenium.Pages;
 using JustWatch.Selenium.Controls;
+using static System.Int32;
 
 namespace JustWatch.Selenium
 {
@@ -64,13 +68,14 @@ namespace JustWatch.Selenium
             var menuItems = homePage.MainMenu.OpenMenu("Бренды");
 
             // Click on Swiss Military image
-            menuItems.First(item => item.Text == "Swiss Military").Image.Click();
+            SelectRandom(menuItems).Title.Click();
             //_wait.Until(ExpectedConditions.UrlContains("swiss-military"));
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.name>a")));
 
             // Click on first product label
             var manufacturerPage = new ManufacturerPage(_driver);
-            manufacturerPage.GetProductCards().First().Title.Click();
+            var productCards = manufacturerPage.GetProductCards();
+            SelectRandom(productCards).Title.Click();
             //_wait.Until(ExpectedConditions.UrlContains("watch"));
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("#button-cart")));
 
@@ -136,6 +141,18 @@ namespace JustWatch.Selenium
         private void TakeScreenshotOnException()
         {
             _driver.TakeScreenshot().SaveAsFile("C:\\error.png", ScreenshotImageFormat.Png);
+        }
+
+        private T SelectRandom<T>(IEnumerable<T> elements)
+        {
+            var random = RandomNumberGenerator.Create();
+            var bytes = new byte[sizeof(int)];
+            random.GetBytes(bytes);
+            var randomInteger = BitConverter.ToInt32(bytes, 0);
+            var randomDouble = Math.Abs(randomInteger)/(double)int.MaxValue;
+            var count = elements.Count();
+            var randomIndex = (int)Math.Floor((double)count*randomDouble);
+            return elements.ElementAt(randomIndex);
         }
     }
 }
