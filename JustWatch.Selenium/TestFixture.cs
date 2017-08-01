@@ -58,11 +58,12 @@ namespace JustWatch.Selenium
             // Open brand menu
             var homePage = new HomePage(_driver);
             var menuItems = homePage.MainMenu.OpenMenu("Бренды");
+            _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]")));
 
             // Click on Swiss Military image
             SelectRandom(menuItems).Title.Click();
             //_wait.Until(ExpectedConditions.UrlContains("swiss-military"));
-            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.name>a")));
+            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.content div#res-products")));
 
             // Click on first product label
             var manufacturerPage = new ManufacturerPage(_driver);
