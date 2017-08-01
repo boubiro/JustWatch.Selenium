@@ -11,18 +11,10 @@ namespace JustWatch.Selenium.Controls
 
         }
 
-        [FindsBy(How = How.CssSelector, Using = "a.megamenu-parent-img img")]
+        [FindsBy(How = How.CssSelector, Using = "a img")]
         public IWebElement Image { get; set; }
         
-        [FindsBy(How = How.CssSelector, Using = "a.megamenu-parent-title")]
+        [FindsBy(How = How.CssSelector, Using = "a")]
         public IWebElement Title { get; set; }
-
-        public string Text
-        {
-            get
-            {
-                return Image.GetAttribute("title");
-            }
-        }
     }
 }

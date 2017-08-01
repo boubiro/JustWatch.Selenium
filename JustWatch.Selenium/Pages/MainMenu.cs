@@ -1,7 +1,6 @@
 ﻿using JustWatch.Selenium.Controls;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,7 +28,7 @@ namespace JustWatch.Selenium.Pages
             new Actions(_webDriver).MoveToElement(menuButton.Link).Perform();
 
             return menuButton.ToWebElement()
-                .FindElements(By.CssSelector("div.dropdown-menu ul li.megamenu-parent-block"))
+                .FindElements(By.CssSelector("div.dropdown-menu ul li"))
                 .Select(element => new MenuItem(_webDriver, element));
         }
     }

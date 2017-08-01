@@ -1,6 +1,5 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
-using System.Reflection;
 
 namespace JustWatch.Selenium.Controls
 {

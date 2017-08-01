@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using OpenQA.Selenium;
 
 namespace JustWatch.Selenium.Pages
@@ -10,9 +7,11 @@ namespace JustWatch.Selenium.Pages
     {
         public HomePage(IWebDriver webDriver) : base(webDriver)
         {
-            MainMenu = new MainMenu(webDriver);
         }
 
-        public MainMenu MainMenu { get; private set; }
+        public IEnumerable<IWebElement> GetTopPanelLinks()
+        {
+            return _webDriver.FindElements(By.CssSelector("div.top-panel ul.top-panel-ul li a"));
+        }
     }
 }
