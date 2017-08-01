@@ -1,21 +1,13 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Support.Events;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
 using JustWatch.Selenium.Pages;
-using JustWatch.Selenium.Controls;
-using static System.Int32;
 
 namespace JustWatch.Selenium
 {
@@ -151,6 +143,9 @@ namespace JustWatch.Selenium
             var randomInteger = BitConverter.ToInt32(bytes, 0);
             var randomDouble = Math.Abs(randomInteger)/(double)int.MaxValue;
             var count = elements.Count();
+            if (count == 0)
+                throw new Exception("Collection should contain elements");
+
             var randomIndex = (int)Math.Floor((double)count*randomDouble);
             return elements.ElementAt(randomIndex);
         }
