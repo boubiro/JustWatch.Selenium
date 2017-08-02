@@ -2,13 +2,11 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
 using JustWatch.Selenium.Pages;
 using JustWatch.Selenium.Extensions;
 using JustWatch.Selenium.Utils;
+using System.Linq;
+using System;
 
 namespace JustWatch.Selenium.Tests
 {
@@ -30,22 +28,9 @@ namespace JustWatch.Selenium.Tests
         {
             // Open brand menu
             var homePage = new HomePage(_driver);
-            var menuItems = homePage.MainMenu.OpenMenu("Бренды");
-            _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]")));
 
-            // Click on Swiss Military image
-            randomSelector.Select(menuItems).Title.Click();
-            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.content div#res-products")));
-
-            // Click on first product label
-            var manufacturerPage = new ManufacturerPage(_driver);
-            var productCards = manufacturerPage.GetProductCards();
-            randomSelector.Select(productCards).Title.Click();
-            _wait.Until(ExpectedConditions.ElementExists(
-                PageObjectExtensions.GetElementLocator<ProductPage>(x => x.AddToCartButton)));
-
-            // Click on cart button
-            var productPage = new ProductPage(_driver);
+            var manufacturerPage = OpenRandomManufacturerPage(homePage);
+            var productPage = OpenRandomProductPage(manufacturerPage);
 
             for (var i = 0; i < 3; i++)
             {
@@ -83,6 +68,36 @@ namespace JustWatch.Selenium.Tests
 
             //orderPage.SubmitOrderButton.Click();
             //_wait.Until(ExpectedConditions.UrlContains("route=checkout/success"));
+        }
+
+        public ManufacturerPage OpenRandomManufacturerPage(PageBase currentPage)
+        {
+            // Open brand menu
+            var menuItems = currentPage.MainMenu.OpenMenu("Бренды");
+            _wait.Until(ExpectedConditions.ElementIsVisible(
+                By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]")));
+
+            // Click on Swiss Military image
+            randomSelector.Select(menuItems).Title.Click();
+
+            _wait.Until(ExpectedConditions.ElementExists(
+                 PageObjectExtensions.GetElementLocator<ManufacturerPage>(x => x.Breadcrumb)));
+
+            return new ManufacturerPage(_driver);
+        }
+
+        public ProductPage OpenRandomProductPage(ManufacturerPage manufacturerPage)
+        {
+            var productCards = manufacturerPage.GetProductCards();
+            if (!productCards.Any())
+                throw new Exception("There is no products on manufacturer page");
+
+            randomSelector.Select(productCards).Title.Click();
+
+            _wait.Until(ExpectedConditions.ElementExists(
+                PageObjectExtensions.GetElementLocator<ProductPage>(x => x.AddToCartButton)));
+
+            return new ProductPage(_driver);
         }
 
         public void WaitForPageToLoad()
