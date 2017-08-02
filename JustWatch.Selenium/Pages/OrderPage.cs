@@ -6,7 +6,7 @@ namespace JustWatch.Selenium.Pages
 {
     public class OrderPage : PageBase
     {
-        [FindsBy(How = How.CssSelector, Using = "#input-payment-zone")]
+        [FindsBy(How = How.CssSelector, Using = "select#input-payment-zone")]
         private IWebElement _zoneInput;
 
         public OrderPage(IWebDriver webDriver) : base(webDriver)

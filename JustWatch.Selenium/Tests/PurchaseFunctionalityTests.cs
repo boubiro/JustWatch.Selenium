@@ -41,10 +41,10 @@ namespace JustWatch.Selenium.Tests
             var manufacturerPage = new ManufacturerPage(_driver);
             var productCards = manufacturerPage.GetProductCards();
             randomSelector.Select(productCards).Title.Click();
+            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("#button-cart")));
 
             // Click on cart button
             var productPage = new ProductPage(_driver);
-            _wait.Until(ExpectedConditions.ElementExists(productPage.GetElementLocator(x => x.AddToCartButton)));
 
             for (var i = 0; i < 3; i++)
             {
@@ -66,6 +66,7 @@ namespace JustWatch.Selenium.Tests
 
             // Populate payment form
             var orderPage = new OrderPage(_driver);
+
             Assert.AreEqual("Оформление заказа", orderPage.Title);
             Assert.AreEqual("Оформление заказа", orderPage.Header.GetInnerHtml());
 
