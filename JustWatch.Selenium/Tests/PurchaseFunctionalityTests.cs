@@ -62,7 +62,7 @@ namespace JustWatch.Selenium.Tests
 
             // Populate payment form
             var orderPage = new OrderPage(_driver);
-            _wait.Until(ExpectedConditions.ElementExists(orderPage.GetElementLocator(x => x.FirstNameInput)));
+            _wait.Until(ExpectedConditions.ElementExists(orderPage.GetElementLocator(x => x.ZoneSelect.WrappedElement)));
 
             orderPage.FirstNameInput.SendKeys("Владимир");
             orderPage.LastNameInput.SendKeys("Владимирович");
