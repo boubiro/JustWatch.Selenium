@@ -10,7 +10,7 @@ namespace JustWatch.Selenium.Extensions
 {
     public static class PageObjectExtensions
     {
-        public static By GetElementLocator<TPage>(this TPage page, Expression<Func<TPage, IWebElement>> expression)
+        public static By GetElementLocator<TPage>(Expression<Func<TPage, IWebElement>> expression)
         {
             var memberExpression = (MemberExpression)expression.Body;
 

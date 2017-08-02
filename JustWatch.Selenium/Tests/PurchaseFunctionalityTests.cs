@@ -41,7 +41,8 @@ namespace JustWatch.Selenium.Tests
             var manufacturerPage = new ManufacturerPage(_driver);
             var productCards = manufacturerPage.GetProductCards();
             randomSelector.Select(productCards).Title.Click();
-            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("#button-cart")));
+            _wait.Until(ExpectedConditions.ElementExists(
+                PageObjectExtensions.GetElementLocator<ProductPage>(x => x.AddToCartButton)));
 
             // Click on cart button
             var productPage = new ProductPage(_driver);
