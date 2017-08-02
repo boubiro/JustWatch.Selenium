@@ -8,7 +8,7 @@ namespace JustWatch.Selenium.Pages
     {
         public OrderPage(IWebDriver webDriver) : base(webDriver)
         {
-            ZoneSelect = new SelectElement(webDriver.FindElement(By.CssSelector("select#input-payment-zone")));
+            ZoneSelect = new SelectElement(ZoneInput);
         }
 
         [FindsBy(How = How.CssSelector, Using = "input#input-payment-firstname")]
@@ -23,6 +23,8 @@ namespace JustWatch.Selenium.Pages
         [FindsBy(How = How.CssSelector, Using = "input#input-payment-telephone")]
         public IWebElement TelephoneInput { get; set; }
 
+        [FindsBy(How = How.CssSelector, Using = "select#input-payment-zone")]
+        public IWebElement ZoneInput { get; set; }
         public SelectElement ZoneSelect { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "input#input-payment-city")]
