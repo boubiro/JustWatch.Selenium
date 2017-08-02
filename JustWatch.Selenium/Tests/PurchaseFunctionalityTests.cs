@@ -59,10 +59,11 @@ namespace JustWatch.Selenium.Tests
 
             // Click on order button
             productPage.SubmitOrderButton.Click();
-            _wait.Until(ExpectedConditions.UrlContains("fast-order"));
 
             // Populate payment form
             var orderPage = new OrderPage(_driver);
+            _wait.Until(ExpectedConditions.ElementExists(orderPage.GetElementLocator(x => x.FirstNameInput)));
+
             orderPage.FirstNameInput.SendKeys("Владимир");
             orderPage.LastNameInput.SendKeys("Владимирович");
             orderPage.EmailInput.SendKeys("stateduma@.ru");
