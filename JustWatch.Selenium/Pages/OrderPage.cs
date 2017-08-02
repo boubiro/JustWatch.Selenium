@@ -23,7 +23,7 @@ namespace JustWatch.Selenium.Pages
         [FindsBy(How = How.CssSelector, Using = "input#input-payment-telephone")]
         public IWebElement TelephoneInput { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "select#input-payment-zone")]
+        [FindsBy(How = How.CssSelector, Using = "#input-payment-zone")]
         public IWebElement ZoneInput { get; set; }
         public SelectElement ZoneSelect { get; set; }
 
