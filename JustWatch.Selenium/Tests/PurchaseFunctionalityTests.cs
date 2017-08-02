@@ -15,7 +15,7 @@ namespace JustWatch.Selenium.Tests
     [TestFixture, Category("Purchase functionality")]
     public class PurchaseFunctionalityTests : TestsBase
     {
-        private readonly RandomSelector randomSelector;
+        private readonly RandomSelector randomSelector = new RandomSelector();
 
         [TestCase, Ignore("too simple")]
         public void ShouldNavigateToWebSite()
@@ -65,7 +65,7 @@ namespace JustWatch.Selenium.Tests
 
             // Populate payment form
             var orderPage = new OrderPage(_driver);
-            _wait.Until(ExpectedConditions.ElementExists(orderPage.GetElementLocator(x => x.ZoneSelect.WrappedElement)));
+            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("select#input-payment-zone")));
 
             orderPage.FirstNameInput.SendKeys("Владимир");
             orderPage.LastNameInput.SendKeys("Владимирович");
