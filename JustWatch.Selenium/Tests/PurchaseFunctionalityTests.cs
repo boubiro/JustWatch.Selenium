@@ -62,11 +62,10 @@ namespace JustWatch.Selenium.Tests
 
             // Click on order button
             productPage.SubmitOrderButton.Click();
+            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("select#input-payment-zone")));
 
             // Populate payment form
             var orderPage = new OrderPage(_driver);
-            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("select#input-payment-zone")));
-
             Assert.AreEqual("Оформление заказа", orderPage.Title);
             Assert.AreEqual("Оформление заказа", orderPage.Header.GetInnerHtml());
 
