@@ -17,5 +17,7 @@ namespace JustWatch.Selenium.Pages
         }
 
         public MainMenu MainMenu { get; private set; }
+
+        public string Title { get { return _webDriver.Title; } }
     }
 }

@@ -67,6 +67,9 @@ namespace JustWatch.Selenium.Tests
             var orderPage = new OrderPage(_driver);
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("select#input-payment-zone")));
 
+            Assert.AreEqual("Оформление заказа", orderPage.Title);
+            Assert.AreEqual("Оформление заказа", orderPage.Header.GetInnerHtml());
+
             orderPage.FirstNameInput.SendKeys("Владимир");
             orderPage.LastNameInput.SendKeys("Владимирович");
             orderPage.EmailInput.SendKeys("stateduma@.ru");

@@ -6,10 +6,16 @@ namespace JustWatch.Selenium.Pages
 {
     public class OrderPage : PageBase
     {
+        [FindsBy(How = How.CssSelector, Using = "#input-payment-zone")]
+        private IWebElement _zoneInput;
+
         public OrderPage(IWebDriver webDriver) : base(webDriver)
         {
-            ZoneSelect = new SelectElement(ZoneInput);
+            ZoneSelect = new SelectElement(_zoneInput);
         }
+
+        [FindsBy(How = How.CssSelector, Using = "h1.category-header")]
+        public IWebElement Header { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "input#input-payment-firstname")]
         public IWebElement FirstNameInput { get; set; }
@@ -23,8 +29,6 @@ namespace JustWatch.Selenium.Pages
         [FindsBy(How = How.CssSelector, Using = "input#input-payment-telephone")]
         public IWebElement TelephoneInput { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#input-payment-zone")]
-        public IWebElement ZoneInput { get; set; }
         public SelectElement ZoneSelect { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "input#input-payment-city")]
