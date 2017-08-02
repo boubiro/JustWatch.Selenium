@@ -8,12 +8,15 @@ using System.Linq;
 using System.Security.Cryptography;
 using JustWatch.Selenium.Pages;
 using JustWatch.Selenium.Extensions;
+using JustWatch.Selenium.Utils;
 
 namespace JustWatch.Selenium.Tests
 {
     [TestFixture, Category("Purchase functionality")]
     public class PurchaseFunctionalityTests : TestsBase
     {
+        private readonly RandomSelector randomSelector;
+
         [TestCase, Ignore("too simple")]
         public void ShouldNavigateToWebSite()
         {            
@@ -31,13 +34,13 @@ namespace JustWatch.Selenium.Tests
             _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]")));
 
             // Click on Swiss Military image
-            SelectRandom(menuItems).Title.Click();
+            randomSelector.Select(menuItems).Title.Click();
             _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.content div#res-products")));
 
             // Click on first product label
             var manufacturerPage = new ManufacturerPage(_driver);
             var productCards = manufacturerPage.GetProductCards();
-            SelectRandom(productCards).Title.Click();
+            randomSelector.Select(productCards).Title.Click();
 
             // Click on cart button
             var productPage = new ProductPage(_driver);
@@ -104,21 +107,6 @@ namespace JustWatch.Selenium.Tests
         private void TakeScreenshotOnException()
         {
             _driver.TakeScreenshot().SaveAsFile("C:\\error.png", ScreenshotImageFormat.Png);
-        }
-
-        private T SelectRandom<T>(IEnumerable<T> elements)
-        {
-            var random = RandomNumberGenerator.Create();
-            var bytes = new byte[sizeof(int)];
-            random.GetBytes(bytes);
-            var randomInteger = BitConverter.ToInt32(bytes, 0);
-            var randomDouble = Math.Abs(randomInteger)/(double)int.MaxValue;
-            var count = elements.Count();
-            if (count == 0)
-                throw new Exception("Collection should contain elements");
-
-            var randomIndex = (int)Math.Floor((double)count*randomDouble);
-            return elements.ElementAt(randomIndex);
         }
     }
 }
