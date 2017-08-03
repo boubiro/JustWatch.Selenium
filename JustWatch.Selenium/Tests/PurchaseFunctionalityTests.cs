@@ -30,44 +30,24 @@ namespace JustWatch.Selenium.Tests
             var homePage = new HomePage(_driver);
 
             var manufacturerPage = OpenRandomManufacturerPage(homePage);
-            var productPage = OpenRandomProductPage(manufacturerPage);
 
-            for (var i = 0; i < 3; i++)
+            for (int i = 0; i < 10; i++)
             {
-                try
-                {
-                    productPage.AddToCartButton.Click();
-                    _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.mcartdiv")));
+                if (manufacturerPage.GetProductCards().Any())
                     break;
-                }
-                catch (WebDriverTimeoutException)
-                {
-                    continue;
-                }
+
+                manufacturerPage = OpenRandomManufacturerPage(manufacturerPage);
             }
 
-            // Click on order button
-            productPage.SubmitOrderButton.Click();
-            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("select#input-payment-zone")));
-
-            // Populate payment form
-            var orderPage = new OrderPage(_driver);
+            var productPage = OpenRandomProductPage(manufacturerPage);
+            var orderPage = OrderProductOnProductPage(productPage);
 
             Assert.AreEqual("Оформление заказа", orderPage.Title);
             Assert.AreEqual("Оформление заказа", orderPage.Header.GetInnerHtml());
 
-            orderPage.FirstNameInput.SendKeys("Владимир");
-            orderPage.LastNameInput.SendKeys("Владимирович");
-            orderPage.EmailInput.SendKeys("stateduma@.ru");
-            orderPage.TelephoneInput.SendKeys("88002002316");
-            orderPage.ZoneSelect.SelectByText("Москва");
-            orderPage.CityInput.SendKeys("Москва");
-            orderPage.AddressInput.SendKeys("Кремль, к1");
-            orderPage.ShippingAgreementCheckbox.Click();
-            orderPage.PrivacyAgrementCheckbox.Click();
+            PopulateOrderForm(orderPage);
 
-            //orderPage.SubmitOrderButton.Click();
-            //_wait.Until(ExpectedConditions.UrlContains("route=checkout/success"));
+            // ExcuteOrderOnOrderPage(orderPage);
         }
 
         public ManufacturerPage OpenRandomManufacturerPage(PageBase currentPage)
@@ -98,6 +78,48 @@ namespace JustWatch.Selenium.Tests
                 PageObjectExtensions.GetElementLocator<ProductPage>(x => x.AddToCartButton)));
 
             return new ProductPage(_driver);
+        }
+
+        private OrderPage OrderProductOnProductPage(ProductPage productPage)
+        {
+            for (var i = 0; i < 2; i++)
+            {
+                try
+                {
+                    productPage.AddToCartButton.Click();
+                    _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.mcartdiv")));
+                    break;
+                }
+                catch (WebDriverTimeoutException)
+                {
+                    continue;
+                }
+            }
+
+            // Click on order button
+            productPage.SubmitOrderButton.Click();
+            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("select#input-payment-zone")));
+
+            return new OrderPage(_driver);
+        }
+
+        private void PopulateOrderForm(OrderPage orderPage)
+        {
+            orderPage.FirstNameInput.SendKeys("Владимир");
+            orderPage.LastNameInput.SendKeys("Владимирович");
+            orderPage.EmailInput.SendKeys("stateduma@.ru");
+            orderPage.TelephoneInput.SendKeys("88002002316");
+            orderPage.ZoneSelect.SelectByText("Москва");
+            orderPage.CityInput.SendKeys("Москва");
+            orderPage.AddressInput.SendKeys("Кремль, к1");
+            orderPage.ShippingAgreementCheckbox.Click();
+            orderPage.PrivacyAgrementCheckbox.Click();
+        }
+
+        private void ExcuteOrderOnOrderPage(OrderPage orderPage)
+        {
+            orderPage.SubmitOrderButton.Click();
+            _wait.Until(ExpectedConditions.UrlContains("route=checkout/success"));
         }
 
         public void WaitForPageToLoad()
