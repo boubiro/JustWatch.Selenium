@@ -15,6 +15,11 @@ namespace JustWatch.Selenium.Pages
         [FindsBy(How = How.CssSelector, Using = "ul.breadcrumb")]
         public IWebElement Breadcrumb { get; set; }
 
+        public bool HasProducts
+        {
+            get { return _webDriver.FindElements(By.CssSelector("div.content div#res-products")).Any(); }
+        }
+
         public IEnumerable<ProductCard> GetProductCards()
         {
             return _webDriver.FindElements(By.CssSelector("div.content div#res-products div.product"))

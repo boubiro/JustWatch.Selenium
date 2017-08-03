@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using JustWatch.Selenium.Controls;
+﻿using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 
@@ -12,8 +10,18 @@ namespace JustWatch.Selenium.Pages
         {
         }
 
-        [FindsBy(How = How.CssSelector, Using = "#button-cart")]
-        public IWebElement AddToCartButton { get; set; }
+        [FindsBy(How = How.CssSelector, Using = "ul.breadcrumb")]
+        public IWebElement Breadcrumb { get; set; }
+
+        public bool CanAddProductToCart
+        {
+            get { return _webDriver.FindElements(By.CssSelector("#button-cart")).Any(); }
+        }
+        
+        public IWebElement AddToCartButton
+        {
+            get { return _webDriver.FindElement(By.CssSelector("#button-cart")); }
+        }
 
         public IWebElement SubmitOrderButton
         {

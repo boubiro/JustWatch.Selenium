@@ -27,19 +27,35 @@ namespace JustWatch.Selenium.Tests
         public void ShouldBeAbleToBuyRandomProduct()
         {
             // Open brand menu
-            var homePage = new HomePage(_driver);
+            PageBase currentPage = new HomePage(_driver);
 
-            var manufacturerPage = OpenRandomManufacturerPage(homePage);
-
+            ManufacturerPage manufacturerPage = null;
+            ProductPage productPage = null;
+            
             for (int i = 0; i < 10; i++)
             {
-                if (manufacturerPage.GetProductCards().Any())
-                    break;
+                currentPage = manufacturerPage = OpenRandomManufacturerPage(currentPage);
 
-                manufacturerPage = OpenRandomManufacturerPage(manufacturerPage);
+                if (!manufacturerPage.HasProducts)
+                {
+                    manufacturerPage = null;
+                    continue;
+                }
+
+                productPage = OpenRandomProductPage(manufacturerPage);
+
+                if (!productPage.CanAddProductToCart)
+                {
+                    productPage = null;
+                    continue;
+                }
+
+                break;
             }
 
-            var productPage = OpenRandomProductPage(manufacturerPage);
+            if (manufacturerPage == null || productPage == null)
+                throw new Exception("Could not find available manufacturer and product");
+            
             var orderPage = OrderProductOnProductPage(productPage);
 
             Assert.AreEqual("Оформление заказа", orderPage.Title);
@@ -75,7 +91,7 @@ namespace JustWatch.Selenium.Tests
             randomSelector.Select(productCards).Title.Click();
 
             _wait.Until(ExpectedConditions.ElementExists(
-                PageObjectExtensions.GetElementLocator<ProductPage>(x => x.AddToCartButton)));
+                PageObjectExtensions.GetElementLocator<ProductPage>(x => x.Breadcrumb)));
 
             return new ProductPage(_driver);
         }
