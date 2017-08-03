@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using JustWatch.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 
@@ -15,12 +17,26 @@ namespace JustWatch.Selenium.Pages
 
         public bool CanAddProductToCart
         {
-            get { return _webDriver.FindElements(By.CssSelector("#button-cart")).Any(); }
+            get
+            {
+                if (_webDriver.ElementExists(By.CssSelector("div.cart a#button-cart")))
+                    return true;
+
+                if (_webDriver.ElementExists(By.CssSelector("div.cart a.button:not(#button-cart)")))
+                    return false;
+
+                throw new Exception("Could not determine if product is available");
+            }
         }
         
         public IWebElement AddToCartButton
         {
-            get { return _webDriver.FindElement(By.CssSelector("#button-cart")); }
+            get { return _webDriver.FindElement(By.CssSelector("div.cart a#button-cart")); }
+        }
+
+        public IWebElement AbsentButton
+        {
+            get { return _webDriver.FindElement(By.CssSelector("div.cart a.button:not(#button-cart)")); }
         }
 
         public IWebElement SubmitOrderButton

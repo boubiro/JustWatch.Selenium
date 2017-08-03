@@ -58,6 +58,7 @@
     <Compile Include="Controls\MenuItem.cs" />
     <Compile Include="Controls\ProductCard.cs" />
     <Compile Include="Extensions\PageObjectExtensions.cs" />
+    <Compile Include="Extensions\WebDriverExtensions.cs" />
     <Compile Include="Extensions\WebElementExtensions.cs" />
     <Compile Include="FirefoxDriverFactory.cs" />
     <Compile Include="Pages\InformationPage.cs" />

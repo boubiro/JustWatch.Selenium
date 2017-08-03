@@ -93,6 +93,8 @@ namespace JustWatch.Selenium.Tests
             _wait.Until(ExpectedConditions.ElementExists(
                 PageObjectExtensions.GetElementLocator<ProductPage>(x => x.Breadcrumb)));
 
+            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.cart")));
+
             return new ProductPage(_driver);
         }
 
