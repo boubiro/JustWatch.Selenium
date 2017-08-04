@@ -32,7 +32,7 @@ namespace JustWatch.Selenium.Tests
             ManufacturerPage manufacturerPage = null;
             ProductPage productPage = null;
             
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 30; i++)
             {
                 currentPage = manufacturerPage = OpenRandomManufacturerPage(currentPage);
 
