@@ -84,16 +84,15 @@ namespace JustWatch.Selenium.Tests
 
         public ProductPage OpenRandomProductPage(ManufacturerPage manufacturerPage)
         {
-            var productCards = manufacturerPage.GetProductCards();
-            if (!productCards.Any())
+            if (!manufacturerPage.HasProducts)
                 throw new Exception("There is no products on manufacturer page");
+
+            var productCards = manufacturerPage.GetProductCards();
 
             randomSelector.Select(productCards).Title.Click();
 
             _wait.Until(ExpectedConditions.ElementExists(
-                PageObjectExtensions.GetElementLocator<ProductPage>(x => x.Breadcrumb)));
-
-            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.cart")));
+                PageObjectExtensions.GetElementLocator<ProductPage>(x => x.AddToCartButton)));
 
             return new ProductPage(_driver);
         }
