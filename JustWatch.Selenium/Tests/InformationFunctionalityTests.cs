@@ -4,6 +4,7 @@ using NUnit.Framework;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Linq;
+using OpenQA.Selenium;
 
 namespace JustWatch.Selenium.Tests
 {
@@ -37,6 +38,8 @@ namespace JustWatch.Selenium.Tests
             var homePage = new HomePage(_driver);
 
             var menuItems = homePage.MainMenu.OpenMenu("Информация");
+
+            _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("div.dropdown-menu ul li.info-href")));
 
             var menuItem = menuItems.FirstOrDefault(item => item.Title.GetInnerHtml() == menuTitle);
             if (menuItem == null)
