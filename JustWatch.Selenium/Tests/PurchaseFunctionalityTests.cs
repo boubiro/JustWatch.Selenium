@@ -76,10 +76,7 @@ namespace JustWatch.Selenium.Tests
             // Click on Swiss Military image
             randomSelector.Select(menuItems).Title.Click();
 
-            _wait.Until(ExpectedConditions.ElementExists(
-                 PageObjectExtensions.GetElementLocator<ManufacturerPage>(x => x.Breadcrumb)));
-
-            return new ManufacturerPage(_driver);
+            return ManufacturerPage.WaitForPage(_driver);
         }
 
         public ProductPage OpenRandomProductPage(ManufacturerPage manufacturerPage)
@@ -91,10 +88,7 @@ namespace JustWatch.Selenium.Tests
 
             randomSelector.Select(productCards).Title.Click();
 
-            _wait.Until(ExpectedConditions.ElementExists(
-                PageObjectExtensions.GetElementLocator<ProductPage>(x => x.AddToCartButton)));
-
-            return new ProductPage(_driver);
+            return ProductPage.WaitForPage(_driver);
         }
 
         private OrderPage OrderProductOnProductPage(ProductPage productPage)
@@ -115,9 +109,8 @@ namespace JustWatch.Selenium.Tests
 
             // Click on order button
             productPage.SubmitOrderButton.Click();
-            _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("select#input-payment-zone")));
 
-            return new OrderPage(_driver);
+            return OrderPage.WaitForPage(_driver);
         }
 
         private void PopulateOrderForm(OrderPage orderPage)

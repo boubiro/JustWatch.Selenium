@@ -1,12 +1,25 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using JustWatch.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
+using OpenQA.Selenium.Support.UI;
 
 namespace JustWatch.Selenium.Pages
 {
     public class ProductPage : PageBase
     {
-        public ProductPage(IWebDriver webDriver) : base(webDriver)
+        public static ProductPage WaitForPage(IWebDriver driver)
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+            wait.Until(ExpectedConditions.ElementExists(
+                PageObjectExtensions.GetElementLocator<ProductPage>(x => x.AddToCartButton)));
+
+            return new ProductPage(driver);
+        }
+
+        protected ProductPage(IWebDriver webDriver) : base(webDriver)
         {
         }
 

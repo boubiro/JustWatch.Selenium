@@ -52,10 +52,7 @@ namespace JustWatch.Selenium.Tests
 
         private void CheckIfPageWasOpened(string expectedPageHeader)
         {
-            _wait.Until(ExpectedConditions.ElementExists(
-                PageObjectExtensions.GetElementLocator<InformationPage>(x => x.Header)));
-
-            var informationPage = new InformationPage(_driver);
+            var informationPage = InformationPage.WaitForPage(_driver);
 
             var pageHeader = informationPage.Header.GetInnerHtml();
 

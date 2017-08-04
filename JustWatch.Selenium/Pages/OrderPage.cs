@@ -1,4 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using JustWatch.Selenium.Extensions;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 
@@ -6,10 +8,20 @@ namespace JustWatch.Selenium.Pages
 {
     public class OrderPage : PageBase
     {
+        public static OrderPage WaitForPage(IWebDriver driver)
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+            wait.Until(ExpectedConditions.ElementExists(
+               PageObjectExtensions.GetElementLocator<OrderPage>(x => x._zoneInput)));
+
+            return new OrderPage(driver);
+        }
+
         [FindsBy(How = How.CssSelector, Using = "select#input-payment-zone")]
         private IWebElement _zoneInput;
 
-        public OrderPage(IWebDriver webDriver) : base(webDriver)
+        protected OrderPage(IWebDriver webDriver) : base(webDriver)
         {
             ZoneSelect = new SelectElement(_zoneInput);
         }

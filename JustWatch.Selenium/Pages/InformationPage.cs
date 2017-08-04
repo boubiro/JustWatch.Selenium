@@ -1,12 +1,24 @@
 ﻿using System;
+using JustWatch.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
+using OpenQA.Selenium.Support.UI;
 
 namespace JustWatch.Selenium.Pages
 {
     public class InformationPage : PageBase
     {
-        public InformationPage(IWebDriver webDriver) : base(webDriver)
+        public static InformationPage WaitForPage(IWebDriver driver)
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+            wait.Until(ExpectedConditions.ElementExists(
+                PageObjectExtensions.GetElementLocator<InformationPage>(x => x.Header)));
+
+            return new InformationPage(driver);
+        }
+
+        protected InformationPage(IWebDriver webDriver) : base(webDriver)
         {
         }
 
