@@ -63,7 +63,8 @@ namespace JustWatch.Selenium.Tests
 
             PopulateOrderForm(orderPage);
 
-            // ExcuteOrderOnOrderPage(orderPage);
+            if (!SystemRuntime.IsDebug())
+                ExcuteOrderOnOrderPage(orderPage);
         }
 
         public ManufacturerPage OpenRandomManufacturerPage(PageBase currentPage)
