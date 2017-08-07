@@ -5,7 +5,6 @@ using OpenQA.Selenium.Support.UI;
 using JustWatch.Selenium.Pages;
 using JustWatch.Selenium.Extensions;
 using JustWatch.Selenium.Utils;
-using System.Linq;
 using System;
 
 namespace JustWatch.Selenium.Tests
@@ -32,7 +31,7 @@ namespace JustWatch.Selenium.Tests
             ManufacturerPage manufacturerPage = null;
             ProductPage productPage = null;
             
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 50; i++)
             {
                 currentPage = manufacturerPage = OpenRandomManufacturerPage(currentPage);
 
@@ -130,7 +129,15 @@ namespace JustWatch.Selenium.Tests
         private void ExcuteOrderOnOrderPage(OrderPage orderPage)
         {
             orderPage.SubmitOrderButton.Click();
-            _wait.Until(ExpectedConditions.UrlContains("route=checkout/success"));
+
+            try
+            {
+                _wait.Until(ExpectedConditions.UrlContains("route=checkout/success"));
+            }
+            catch (WebDriverTimeoutException)
+            {
+                throw new Exception($"Page with successfull order message was not opened. Current page is: {_driver.Url}.");
+            }
         }
 
         public void WaitForPageToLoad()

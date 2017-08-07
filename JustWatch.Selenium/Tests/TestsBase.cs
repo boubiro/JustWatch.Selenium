@@ -15,7 +15,7 @@ namespace JustWatch.Selenium.Tests
         {
             var driverFactory = new FirefoxDriverFactory();
             _driver = driverFactory.Create();
-            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(20));
         }
 
         [OneTimeTearDown]
