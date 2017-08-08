@@ -95,16 +95,10 @@ namespace JustWatch.Selenium.Tests
         {
             for (var i = 0; i < 2; i++)
             {
-                try
-                {
-                    productPage.AddToCartButton.Click();
-                    _wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.mcartdiv")));
+                productPage.AddToCartButton.Click();
+
+                if (_wait.TryToWaitUntil(ExpectedConditions.ElementExists(By.CssSelector("div.mcartdiv"))))
                     break;
-                }
-                catch (WebDriverTimeoutException)
-                {
-                    continue;
-                }
             }
 
             // Click on order button
@@ -128,16 +122,17 @@ namespace JustWatch.Selenium.Tests
 
         private void ExcuteOrderOnOrderPage(OrderPage orderPage)
         {
-            orderPage.SubmitOrderButton.Click();
+            for (var i = 0; i < 2; i++)
+            {
+                orderPage.SubmitOrderButton.Click();
 
-            try
-            {
-                _wait.Until(ExpectedConditions.UrlContains("route=checkout/success"));
+                if (_wait.TryToWaitUntil(ExpectedConditions.UrlContains("route=checkout/success")))
+                    break;
             }
-            catch (WebDriverTimeoutException)
-            {
-                throw new Exception($"Page with successfull order message was not opened. Current page is: {_driver.Url}.");
-            }
+
+            _wait.Until(
+                ExpectedConditions.UrlContains("route=checkout/success"),
+                $"Page with successfull order message was not opened. Current page is: {_driver.Url}.");
         }
 
         public void WaitForPageToLoad()
