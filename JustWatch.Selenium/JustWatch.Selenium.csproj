@@ -70,9 +70,13 @@
     <Compile Include="Pages\OrderPage.cs" />
     <Compile Include="Pages\PageBase.cs" />
     <Compile Include="SystemRuntime.cs" />
+    <Compile Include="Tests\CartFunctionalityTests.cs" />
+    <Compile Include="Tests\FoundChipperFunctionalityTests.cs" />
     <Compile Include="Tests\PurchaseFunctionalityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\InformationFunctionalityTests.cs" />
+    <Compile Include="Tests\RecallFunctionalityTests.cs" />
+    <Compile Include="Tests\SubscribeFunctionalityTests.cs" />
     <Compile Include="Tests\TestsBase.cs" />
     <Compile Include="Utils\RandomSelector.cs" />
   </ItemGroup>
