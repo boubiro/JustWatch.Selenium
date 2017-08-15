@@ -1,4 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using System.Linq;
+using JustWatch.Selenium.Extensions;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 
 namespace JustWatch.Selenium.Controls
@@ -33,6 +35,13 @@ namespace JustWatch.Selenium.Controls
 
         [FindsBy(How = How.CssSelector, Using = "button.mfp-close")]
         public IWebElement CloseButton { get; set; }
+
+        public string[] GetErrorMessages()
+        {
+            return _webDriver.FindElements(By.CssSelector("div.text-danger"))
+                    .Select(element => element.GetInnerHtml())
+                    .ToArray();
+        }
     }
 }
 

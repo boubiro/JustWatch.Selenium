@@ -21,42 +21,50 @@ namespace JustWatch.Selenium.Tests
             phoneCallPopup.NameImput.SendKeys("Владимир Владимирович");
             phoneCallPopup.PhoneInput.SendKeys("89312853680");
             phoneCallPopup.CallTimeInput.Click();
-            phoneCallPopup.CommentInput.Click();
+            phoneCallPopup.ToWebElement().Click();
             phoneCallPopup.CommentInput.SendKeys("Я хочу проконсультироваться по поводу нужной мне модели");
             phoneCallPopup.TermCheckbox.Click();
 
-            if (!SystemRuntime.IsDebug())
+            //if (!SystemRuntime.IsDebug())
             {
-                TrySeveralTimes(
-                  () => phoneCallPopup.SubmitButton.Click(),
-                  ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper>div.popup-center>p")),
-                  3,
-                  "Popup with successfull phone call request was not displayed");
+                TrySeveralTimes(() => {
+                    phoneCallPopup.SubmitButton.Click();
+
+                    Assert.IsEmpty(phoneCallPopup.GetErrorMessages());
+
+                    _wait.Until(
+                        ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper>div.popup-center>p")),
+                        "Popup with successfull phone call request was not displayed");
+                }, 3);
             }
 
-            TrySeveralTimes(
-                () => phoneCallPopup.CloseButton.Click(),
-                FluentCondition.Throws<NoSuchElementException>(
+            TrySeveralTimes(() => {
+                phoneCallPopup.CloseButton.Click();
+                _wait.Until(
+                    FluentCondition.Throws<NoSuchElementException>(
                         ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper"))).Condition,
-                3,
-                "Phone call popup should be closed");
+                    "Phone call popup should be closed");
+
+            }, 3);
         }
 
-        private void TrySeveralTimes<TWaitResult>(
-            Action action, 
-            Func<IWebDriver, TWaitResult> escapeCondition, 
-            int attempts, 
-            string errorMessage)
+        private void TrySeveralTimes(Action action, int attempts)
         {
             for (var i = 0; i < attempts; i++)
             {
-                action();
-
-                if (_wait.TryToWaitUntil(escapeCondition))
+                try
+                {
+                    action();
                     break;
+                }
+                catch (Exception)
+                {
+                    if (i == attempts - 1)
+                    {
+                        throw;
+                    }
+                }
             }
-
-            _wait.Until(escapeCondition, errorMessage);
         }
     }
 }
