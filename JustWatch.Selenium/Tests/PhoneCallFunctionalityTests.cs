@@ -33,7 +33,7 @@ namespace JustWatch.Selenium.Tests
                     _wait.Until(
                         ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper>div.popup-center>p")),
                         "Popup with successfull phone call request was not displayed");
-                }, 3);
+                }, 1);
             }
 
             TrySeveralTimes(() => {
@@ -43,7 +43,7 @@ namespace JustWatch.Selenium.Tests
                         ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper"))).Condition,
                     "Phone call popup should be closed");
 
-            }, 3);
+            }, 1);
         }
 
         private void TrySeveralTimes(Action action, int attempts)
