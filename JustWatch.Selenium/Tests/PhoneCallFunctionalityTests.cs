@@ -1,4 +1,5 @@
-﻿using JustWatch.Selenium.Pages;
+﻿using System;
+using JustWatch.Selenium.Pages;
 using JustWatch.Selenium.Extensions;
 using JustWatch.Selenium.FluentWait;
 using NUnit.Framework;
@@ -26,19 +27,36 @@ namespace JustWatch.Selenium.Tests
 
             if (!SystemRuntime.IsDebug())
             {
-                phoneCallPopup.SubmitButton.Click();
-
-                _wait.Until(
-                    ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper>div.popup-center>p")),
-                    "Popup with successfull phone call request was not displayed");
+                TrySeveralTimes(
+                  () => phoneCallPopup.SubmitButton.Click(),
+                  ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper>div.popup-center>p")),
+                  2,
+                  "Popup with successfull phone call request was not displayed");
             }
 
-            phoneCallPopup.CloseButton.Click();
-
-            _wait.Until(
+            TrySeveralTimes(
+                () => phoneCallPopup.CloseButton.Click(),
                 FluentCondition.Throws<NoSuchElementException>(
-                    ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper"))).Condition,
+                        ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper"))).Condition,
+                2,
                 "Phone call popup should be closed");
+        }
+
+        private void TrySeveralTimes<TWaitResult>(
+            Action action, 
+            Func<IWebDriver, TWaitResult> escapeCondition, 
+            int attempts, 
+            string errorMessage)
+        {
+            for (var i = 0; i < attempts; i++)
+            {
+                action();
+
+                if (_wait.TryToWaitUntil(escapeCondition))
+                    break;
+            }
+
+            _wait.Until(escapeCondition, errorMessage);
         }
     }
 }
