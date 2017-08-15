@@ -23,46 +23,41 @@ namespace JustWatch.Selenium.Tests
             phoneCallPopup.CommentInput.SendKeys("Я хочу проконсультироваться по поводу нужной мне модели");
             phoneCallPopup.TermCheckbox.Click();
 
-            //if (!SystemRuntime.IsDebug())
+            if (!SystemRuntime.IsDebug())
             {
-                TrySeveralTimes(() => {
-                    phoneCallPopup.SubmitButton.Click();
+                phoneCallPopup.SubmitButton.Click();
 
-                    Assert.IsEmpty(phoneCallPopup.GetErrorMessages());
+                Assert.IsEmpty(phoneCallPopup.GetErrorMessages());
 
-                    _wait.Until(
-                        ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper>div.popup-center>p")),
-                        "Popup with successfull phone call request was not displayed");
-                }, 1);
-            }
-
-            TrySeveralTimes(() => {
-                phoneCallPopup.CloseButton.Click();
                 _wait.Until(
-                    FluentCondition.Throws<NoSuchElementException>(
-                        ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper"))).Condition,
-                    "Phone call popup should be closed");
-
-            }, 1);
-        }
-
-        private void TrySeveralTimes(Action action, int attempts)
-        {
-            for (var i = 0; i < attempts; i++)
-            {
-                try
-                {
-                    action();
-                    break;
-                }
-                catch (Exception)
-                {
-                    if (i == attempts - 1)
-                    {
-                        throw;
-                    }
-                }
+                    ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper>div.popup-center>p")),
+                    "Popup with successfull phone call request was not displayed");
             }
+
+            phoneCallPopup.CloseButton.Click();
+            _wait.Until(
+                FluentCondition.Throws<NoSuchElementException>(
+                    ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper"))).Condition,
+                "Phone call popup should be closed");
         }
+
+        //private void TrySeveralTimes(Action action, int attempts)
+        //{
+        //    for (var i = 0; i < attempts; i++)
+        //    {
+        //        try
+        //        {
+        //            action();
+        //            break;
+        //        }
+        //        catch (Exception)
+        //        {
+        //            if (i == attempts - 1)
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //    }
+        //}
     }
 }
