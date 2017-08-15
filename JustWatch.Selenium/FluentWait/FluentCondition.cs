@@ -12,6 +12,8 @@ namespace JustWatch.Selenium.FluentWait
             this.currentCondition = condition;
         }
 
+        #region Static methods
+
         public static FluentCondition If(Func<IWebDriver, bool> condition)
         {
             return new FluentCondition(new CustomCondition(condition));
@@ -31,6 +33,12 @@ namespace JustWatch.Selenium.FluentWait
         {
             return new FluentCondition(new ExceptionCondition<TException>(function));
         }
+
+
+
+        #endregion
+
+        #region Instance methods
 
         public FluentCondition And(Func<IWebDriver, bool> condition)
         {
@@ -52,6 +60,8 @@ namespace JustWatch.Selenium.FluentWait
                 currentCondition,
                 new CustomCondition(condition)));
         }
+
+        #endregion
 
         public Func<IWebDriver, bool> Condition
         {

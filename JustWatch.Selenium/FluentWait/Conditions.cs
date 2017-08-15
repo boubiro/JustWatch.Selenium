@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using OpenQA.Selenium;
 
@@ -9,20 +11,26 @@ namespace JustWatch.Selenium.FluentWait
         bool Condition(IWebDriver driver);
     }
 
-    public class CustomCondition : IWaitCondition
-    {
-        private readonly Func<IWebDriver, bool> function;
+    #region Unary conditions
 
-        public CustomCondition(Func<IWebDriver, bool> function)
+    public class OppositeCondition : IWaitCondition
+    {
+        private readonly IWaitCondition innerCondition;
+
+        public OppositeCondition(IWaitCondition condition)
         {
-            this.function = function;
+            this.innerCondition = condition;
         }
 
         public bool Condition(IWebDriver driver)
         {
-            return function(driver);
+            return !innerCondition.Condition(driver);
         }
     }
+
+    #endregion
+
+    #region Binary conditions
 
     public abstract class BinaryCondition : IWaitCondition
     {
@@ -80,6 +88,10 @@ namespace JustWatch.Selenium.FluentWait
         }
     }
 
+    #endregion
+
+    #region Custom conditions
+
     public class IsNullCondition<T> : IWaitCondition where T : class
     {
         private readonly Func<IWebDriver, T> function;
@@ -105,7 +117,6 @@ namespace JustWatch.Selenium.FluentWait
             this.function = function;
         }
 
-
         public bool Condition(IWebDriver driver)
         {
             try
@@ -120,18 +131,35 @@ namespace JustWatch.Selenium.FluentWait
         }
     }
 
-    public class OppositeCondition : IWaitCondition
+    public class CustomCondition : IWaitCondition
     {
-        private readonly IWaitCondition innerCondition;
+        private readonly Func<IWebDriver, bool> function;
 
-        public OppositeCondition(IWaitCondition condition)
+        public CustomCondition(Func<IWebDriver, bool> function)
         {
-            this.innerCondition = condition;
+            this.function = function;
         }
 
         public bool Condition(IWebDriver driver)
         {
-            return !innerCondition.Condition(driver);
+            return function(driver);
         }
     }
+
+    public class IsEmptyCondition<TElement>: IWaitCondition
+    {
+        private readonly Func<IWebDriver, IEnumerable<TElement>> function;
+
+        public IsEmptyCondition(Func<IWebDriver, IEnumerable<TElement>> function)
+        {
+            this.function = function;
+        }
+
+        public bool Condition(IWebDriver driver)
+        {
+            return !function(driver).Any();
+        }
+    }
+
+    #endregion
 }

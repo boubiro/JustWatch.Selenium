@@ -68,7 +68,7 @@
     <Compile Include="Extensions\WebElementExtensions.cs" />
     <Compile Include="FirefoxDriverFactory.cs" />
     <Compile Include="FluentWait\FluentCondition.cs" />
-    <Compile Include="FluentWait\IWaitCondition.cs" />
+    <Compile Include="FluentWait\Conditions.cs" />
     <Compile Include="Pages\InformationPage.cs" />
     <Compile Include="Pages\MainMenu.cs" />
     <Compile Include="Pages\ManufacturerPage.cs" />
