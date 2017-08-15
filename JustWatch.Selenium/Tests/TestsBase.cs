@@ -23,10 +23,9 @@ namespace JustWatch.Selenium.Tests
             var driverFactory = new FirefoxDriverFactory();
             _driver = driverFactory.Create();
             _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(20));
-            var type = GetType();
             _logger = LogManager.GetLogger(GetType());
 
-            _logger.Debug("OneTimeSetup");
+            _logger.Debug($"{TestContext.CurrentContext.Test.ClassName} OneTimeSetup");
         }
 
         [OneTimeTearDown]
@@ -34,7 +33,7 @@ namespace JustWatch.Selenium.Tests
         {
             _driver.Quit();
 
-            _logger.Debug("OneTimeTearDown");
+            _logger.Debug($"{TestContext.CurrentContext.Test.ClassName} OneTimeTearDown");
         }
 
         [SetUp]
@@ -42,13 +41,13 @@ namespace JustWatch.Selenium.Tests
         {
             _driver.Navigate().GoToUrl(AppSettings.WebSiteUrl);
 
-            _logger.Debug("SetUp");
+            _logger.Debug($"{TestContext.CurrentContext.Test.FullName} SetUp");
         }
 
         [TearDown]
         public void RunAfterEachTest()
         {
-            _logger.Debug("TearDown");
+            _logger.Debug($"{TestContext.CurrentContext.Test.FullName} TearDown");
         }
     }
 }
