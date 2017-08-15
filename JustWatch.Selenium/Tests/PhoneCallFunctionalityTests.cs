@@ -30,7 +30,7 @@ namespace JustWatch.Selenium.Tests
                 TrySeveralTimes(
                   () => phoneCallPopup.SubmitButton.Click(),
                   ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper>div.popup-center>p")),
-                  2,
+                  3,
                   "Popup with successfull phone call request was not displayed");
             }
 
@@ -38,7 +38,7 @@ namespace JustWatch.Selenium.Tests
                 () => phoneCallPopup.CloseButton.Click(),
                 FluentCondition.Throws<NoSuchElementException>(
                         ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper"))).Condition,
-                2,
+                3,
                 "Phone call popup should be closed");
         }
 
