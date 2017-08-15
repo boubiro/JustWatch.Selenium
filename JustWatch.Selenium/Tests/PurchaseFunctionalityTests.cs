@@ -111,7 +111,7 @@ namespace JustWatch.Selenium.Tests
         {
             orderPage.FirstNameInput.SendKeys("Владимир");
             orderPage.LastNameInput.SendKeys("Владимирович");
-            orderPage.EmailInput.SendKeys("stateduma@.ru");
+            orderPage.EmailInput.SendKeys("olegdb@inbox.ru");
             orderPage.TelephoneInput.SendKeys("88002002316");
             orderPage.ZoneSelect.SelectByText("Москва");
             orderPage.CityInput.SendKeys("Москва");
