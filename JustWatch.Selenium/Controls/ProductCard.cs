@@ -10,7 +10,7 @@ namespace JustWatch.Selenium.Controls
         {
         }
 
-        [FindsBy(How = How.CssSelector, Using = "div.product-about a")]
+        [FindsBy(How = How.CssSelector, Using = "div.product-about>div.name>a")]
         public IWebElement Title { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "div.product-about div.price span")]

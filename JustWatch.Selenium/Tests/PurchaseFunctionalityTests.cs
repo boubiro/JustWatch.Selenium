@@ -69,7 +69,7 @@ namespace JustWatch.Selenium.Tests
         public ManufacturerPage OpenRandomManufacturerPage(PageBase currentPage)
         {
             // Open brand menu
-            var menuItems = currentPage.MainMenu.OpenMenu("Бренды");
+            var menuItems = currentPage.Menu.OpenMenu("Бренды");
             _wait.Until(ExpectedConditions.ElementIsVisible(
                 By.CssSelector("li.megamenu-parent-block a.megamenu-parent-img img[title=\"Swiss Military\"]")));
 

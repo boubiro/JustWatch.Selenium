@@ -5,8 +5,8 @@ namespace JustWatch.Selenium.Controls
 {
     public class MenuButton : ControlBase
     {
-        public MenuButton(IWebDriver webDriver, IWebElement webElement) :
-            base(webDriver, webElement)
+        public MenuButton(IWebDriver webDriver, IWebElement webElement) 
+            :base(webDriver, webElement)
         {
 
         }

@@ -1,10 +1,8 @@
 ﻿using JustWatch.Selenium.Extensions;
 using JustWatch.Selenium.Pages;
 using NUnit.Framework;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Linq;
-using OpenQA.Selenium;
 
 namespace JustWatch.Selenium.Tests
 {
@@ -26,7 +24,11 @@ namespace JustWatch.Selenium.Tests
 
             panelLink.Click();
 
-            CheckIfPageWasOpened(expectedPageHeader);
+            var informationPage = InformationPage.WaitForPage(_driver);
+
+            var pageHeader = informationPage.Header.GetInnerHtml();
+
+            Assert.AreEqual(expectedPageHeader, pageHeader);
         }
 
         [TestCase("О магазине", "О магазине", TestName = "ShouldOpenAboutPageFromMainMenu")]
@@ -35,28 +37,11 @@ namespace JustWatch.Selenium.Tests
         [TestCase("Публичная оферта", "Публичная оферта", TestName = "ShouldOpenPrivacyPageFromMainMenu")]
         public void ShouldOpenInformationPageFromMainMenu(string menuTitle, string expectedPageHeader)
         {
-            var homePage = new HomePage(_driver);
+            var siteNavigator = new SiteNavigator(_driver);
 
-            var menuItems = homePage.MainMenu.OpenMenu("Информация");
+            var informationPage = siteNavigator.OpenInformationPage(menuTitle);
 
-            _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("div.dropdown-menu ul li.info-href")));
-
-            var menuItem = menuItems.FirstOrDefault(item => item.Title.GetInnerHtml() == menuTitle);
-            if (menuItem == null)
-                throw new Exception($"Could not find menu with title '{menuTitle}' on mainmenu.");
-
-            menuItem.Title.Click();
-
-            CheckIfPageWasOpened(expectedPageHeader);
-        }
-
-        private void CheckIfPageWasOpened(string expectedPageHeader)
-        {
-            var informationPage = InformationPage.WaitForPage(_driver);
-
-            var pageHeader = informationPage.Header.GetInnerHtml();
-
-            Assert.AreEqual(expectedPageHeader, pageHeader);
+            Assert.AreEqual(expectedPageHeader, informationPage.Header.GetInnerHtml());
         }
     }
 }

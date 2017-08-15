@@ -1,14 +1,12 @@
-﻿using System;
-using JustWatch.Selenium.Pages;
+﻿using JustWatch.Selenium.Pages;
 using JustWatch.Selenium.Extensions;
-using JustWatch.Selenium.FluentWait;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
 namespace JustWatch.Selenium.Tests
 {
-    [TestFixture, Category("Recall functionality")]
+    [TestFixture, Category("Phone call functionality")]
     public class PhoneCallFunctionalityTests : TestsBase
     {
         [TestCase]
@@ -16,7 +14,7 @@ namespace JustWatch.Selenium.Tests
         {
             var page = new HomePage(_driver);
 
-            var phoneCallPopup = page.OpenCallPopup();
+            var phoneCallPopup = page.OpenPhoneCallPopup();
 
             phoneCallPopup.NameImput.SendKeys("Владимир Владимирович");
             phoneCallPopup.PhoneInput.SendKeys("89312853680");
@@ -34,30 +32,69 @@ namespace JustWatch.Selenium.Tests
                     "Popup with successfull phone call request was not displayed");
             }
 
-            phoneCallPopup.CloseButton.Click();
-            _wait.Until(
-                FluentCondition.Throws<NoSuchElementException>(
-                    ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper"))).Condition,
-                "Phone call popup should be closed");
+            phoneCallPopup.ClosePopup();
         }
 
-        //private void TrySeveralTimes(Action action, int attempts)
-        //{
-        //    for (var i = 0; i < attempts; i++)
-        //    {
-        //        try
-        //        {
-        //            action();
-        //            break;
-        //        }
-        //        catch (Exception)
-        //        {
-        //            if (i == attempts - 1)
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //    }
-        //}
+        [TestCase]
+        public void ShouldBeAbleToOpenPhoneCallPopupFromManufacturerPage()
+        {
+            var siteNavigator = new SiteNavigator(_driver);
+
+            var manufacturerPage = siteNavigator.OpenManufacturerPage("Swiss Military");
+
+            var phoneCallPopup = manufacturerPage.OpenPhoneCallPopup();
+
+            phoneCallPopup.ClosePopup();
+        }
+
+        [TestCase]
+        public void ShouldBeAbleToOpenPhoneCallPopupFromCategoryPage()
+        {
+            var siteNavigator = new SiteNavigator(_driver);
+
+            var categoryPage = siteNavigator.OpenCategoryPage("Немецкие");
+
+            var phoneCallPopup = categoryPage.OpenPhoneCallPopup();
+
+            phoneCallPopup.ClosePopup();
+        }
+
+        [TestCase]
+        public void ShouldBeAbleToOpenPhoneCallPopupFromProductPage()
+        {
+            var siteNavigator = new SiteNavigator(_driver);
+
+            siteNavigator.OpenManufacturerPage("Swiss Military");
+
+            var productPage = siteNavigator.OpenProductPage("Swiss Military SMP36010.09");
+
+            var phoneCallPopup = productPage.OpenPhoneCallPopup();
+
+            phoneCallPopup.ClosePopup();
+        }
+
+        [TestCase]
+        public void ShouldBeAbleToOpenPhoneCallPopupFromInformationPage()
+        {
+            var siteNavigator = new SiteNavigator(_driver);
+
+            var informationPage = siteNavigator.OpenInformationPage("Гарантия и возврат");
+
+            var phoneCallPopup = informationPage.OpenPhoneCallPopup();
+
+            phoneCallPopup.ClosePopup();
+        }
+
+        [TestCase]
+        public void ShouldBeAbleToOpenPhoneCallPopupFromSalePage()
+        {
+            var siteNavigator = new SiteNavigator(_driver);
+
+            var salePage = siteNavigator.OpenSalePage();
+
+            var phoneCallPopup = salePage.OpenPhoneCallPopup();
+
+            phoneCallPopup.ClosePopup();
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace JustWatch.Selenium.Pages
 
         public IEnumerable<MenuButton> GetMenuButtons()
         {
-            return _webDriver.FindElements(By.CssSelector("nav#megamenu-menu ul.navbar-nav li.dropdown"))
+            return _webDriver.FindElements(By.CssSelector("nav#megamenu-menu ul.navbar-nav>li"))
                 .Select(element => new MenuButton(_webDriver, element));
         }
 

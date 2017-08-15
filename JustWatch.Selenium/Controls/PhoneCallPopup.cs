@@ -1,7 +1,10 @@
 ﻿using System.Linq;
 using JustWatch.Selenium.Extensions;
+using JustWatch.Selenium.FluentWait;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
+using OpenQA.Selenium.Support.UI;
+using System;
 
 namespace JustWatch.Selenium.Controls
 {
@@ -41,6 +44,17 @@ namespace JustWatch.Selenium.Controls
             return _webDriver.FindElements(By.CssSelector("div.text-danger"))
                     .Select(element => element.GetInnerHtml())
                     .ToArray();
+        }
+
+        public void ClosePopup()
+        {
+            CloseButton.Click();
+
+            var wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(20));
+            wait.Until(
+                FluentCondition.Throws<NoSuchElementException>(
+                    ExpectedConditions.ElementExists(By.CssSelector("div#popup-call-phone-wrapper"))).Condition,
+                "Phone call popup should be closed");
         }
     }
 }
