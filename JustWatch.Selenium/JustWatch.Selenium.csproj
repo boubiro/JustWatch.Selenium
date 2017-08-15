@@ -60,12 +60,15 @@
     <Compile Include="Controls\ControlBase.cs" />
     <Compile Include="Controls\MenuButton.cs" />
     <Compile Include="Controls\MenuItem.cs" />
+    <Compile Include="Controls\PhoneCallPopup.cs" />
     <Compile Include="Controls\ProductCard.cs" />
     <Compile Include="Extensions\PageObjectExtensions.cs" />
     <Compile Include="Extensions\WaitExtensions.cs" />
     <Compile Include="Extensions\WebDriverExtensions.cs" />
     <Compile Include="Extensions\WebElementExtensions.cs" />
     <Compile Include="FirefoxDriverFactory.cs" />
+    <Compile Include="FluentWait\FluentCondition.cs" />
+    <Compile Include="FluentWait\IWaitCondition.cs" />
     <Compile Include="Pages\InformationPage.cs" />
     <Compile Include="Pages\MainMenu.cs" />
     <Compile Include="Pages\ManufacturerPage.cs" />
@@ -79,7 +82,7 @@
     <Compile Include="Tests\PurchaseFunctionalityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\InformationFunctionalityTests.cs" />
-    <Compile Include="Tests\RecallFunctionalityTests.cs" />
+    <Compile Include="Tests\PhoneCallFunctionalityTests.cs" />
     <Compile Include="Tests\SubscribeFunctionalityTests.cs" />
     <Compile Include="Tests\TestsBase.cs" />
     <Compile Include="Utils\RandomSelector.cs" />

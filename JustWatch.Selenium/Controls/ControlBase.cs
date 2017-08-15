@@ -8,6 +8,12 @@ namespace JustWatch.Selenium.Controls
         protected readonly IWebDriver _webDriver;
         protected readonly IWebElement _innerElement;
 
+        protected ControlBase(IWebDriver webDriver, By selector)
+            : this(webDriver, webDriver.FindElement(selector))
+        {
+            
+        }
+
         protected ControlBase(IWebDriver webDriver, IWebElement webElement)
         {
             _webDriver = webDriver;

@@ -23,6 +23,7 @@ namespace JustWatch.Selenium.Tests
             var driverFactory = new FirefoxDriverFactory();
             _driver = driverFactory.Create();
             _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(20));
+            _wait.IgnoreExceptionTypes(typeof(NoSuchElementException));
             _logger = LogManager.GetLogger(GetType());
 
             _logger.Debug($"{TestContext.CurrentContext.Test.ClassName} OneTimeSetup");
