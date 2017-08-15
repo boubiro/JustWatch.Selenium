@@ -20,7 +20,6 @@ namespace JustWatch.Selenium.Tests
 
             phoneCallPopup.NameImput.SendKeys("Владимир Владимирович");
             phoneCallPopup.PhoneInput.SendKeys("89312853680");
-            phoneCallPopup.CallTimeInput.SendKeys("15.08.2017 16:45");
             phoneCallPopup.CommentInput.SendKeys("Я хочу проконсультироваться по поводу нужной мне модели");
             phoneCallPopup.TermCheckbox.Click();
 
