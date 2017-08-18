@@ -12,7 +12,10 @@ namespace JustWatch.Selenium.Pages
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
             wait.Until(ExpectedConditions.ElementExists(
-               PageObjectExtensions.GetElementLocator<ManufacturerPage>(x => x.Breadcrumb)));
+                PageObjectExtensions.GetElementLocator<ManufacturerPage>(x => x.Breadcrumb)));
+
+            wait.Until(ExpectedConditions.ElementExists(
+                PageObjectExtensions.GetElementLocator<ProductPage>(x => x.PhoneCallButton)));
 
             return new CategoryPage(driver);
         }

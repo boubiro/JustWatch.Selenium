@@ -15,6 +15,9 @@ namespace JustWatch.Selenium.Pages
             wait.Until(ExpectedConditions.ElementExists(
                 PageObjectExtensions.GetElementLocator<InformationPage>(x => x.Header)));
 
+            wait.Until(ExpectedConditions.ElementExists(
+                PageObjectExtensions.GetElementLocator<ProductPage>(x => x.PhoneCallButton)));
+
             return new InformationPage(driver);
         }
 
