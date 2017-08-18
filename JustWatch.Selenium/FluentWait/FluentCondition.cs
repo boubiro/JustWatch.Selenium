@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using OpenQA.Selenium;
 
 namespace JustWatch.Selenium.FluentWait
@@ -34,7 +35,10 @@ namespace JustWatch.Selenium.FluentWait
             return new FluentCondition(new ExceptionCondition<TException>(function));
         }
 
-
+        public static FluentCondition IsEmpty<TElement>(Func<IWebDriver, IEnumerable<TElement>> function)
+        {
+            return new FluentCondition(new IsEmptyCondition<TElement>(function));
+        }
 
         #endregion
 
@@ -63,6 +67,8 @@ namespace JustWatch.Selenium.FluentWait
 
         #endregion
 
+        #region Properties
+
         public Func<IWebDriver, bool> Condition
         {
             get
@@ -70,5 +76,7 @@ namespace JustWatch.Selenium.FluentWait
                 return this.currentCondition.Condition;
             }
         }
+
+        #endregion
     }
 }

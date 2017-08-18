@@ -20,6 +20,9 @@ namespace JustWatch.Selenium
             var options = new FirefoxOptions();
             options.SetPreference("javascript.enabled", true);
             options.SetLoggingPreference(LogType.Browser, LogLevel.Warning);
+            options.SetPreference(
+                "general.useragent.override",
+                "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0 Selenium/3.4");
 
             return new FirefoxDriver(driverService, options, CommandTimeout);
         }
