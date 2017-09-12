@@ -9,7 +9,7 @@ using System;
 
 namespace JustWatch.Selenium.Tests
 {
-    [TestFixture, Category("Purchase functionality")]
+    [TestFixture, Category("Order functionality")]
     public class PurchaseFunctionalityTests : TestsBase
     {
         private readonly RandomSelector randomSelector = new RandomSelector();
@@ -109,11 +109,11 @@ namespace JustWatch.Selenium.Tests
 
         private void PopulateOrderForm(OrderPage orderPage)
         {
-            orderPage.FirstNameInput.SendKeys("Владимир");
-            orderPage.LastNameInput.SendKeys("Владимирович");
+            orderPage.FirstNameInput.SendKeys("Владимир Владимирович");
+            //orderPage.LastNameInput.SendKeys("Владимирович");
             orderPage.EmailInput.SendKeys("olegdb@inbox.ru");
             orderPage.TelephoneInput.SendKeys("88002002316");
-            orderPage.ZoneSelect.SelectByText("Москва");
+            //orderPage.ZoneSelect.SelectByText("Москва");
             orderPage.CityInput.SendKeys("Москва");
             orderPage.AddressInput.SendKeys("Кремль, к1");
             orderPage.ShippingAgreementCheckbox.Click();

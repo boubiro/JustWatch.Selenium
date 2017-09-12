@@ -12,8 +12,11 @@ namespace JustWatch.Selenium.Pages
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
+            //wait.Until(ExpectedConditions.ElementExists(
+            //    PageObjectExtensions.GetElementLocator<OrderPage>(x => x._zoneInput)));
+
             wait.Until(ExpectedConditions.ElementExists(
-                PageObjectExtensions.GetElementLocator<OrderPage>(x => x._zoneInput)));
+                PageObjectExtensions.GetElementLocator<OrderPage>(x => x.AddressInput)));
 
             wait.Until(ExpectedConditions.ElementExists(
                 PageObjectExtensions.GetElementLocator<ProductPage>(x => x.PhoneCallButton)));
@@ -21,12 +24,12 @@ namespace JustWatch.Selenium.Pages
             return new OrderPage(driver);
         }
 
-        [FindsBy(How = How.CssSelector, Using = "select#input-payment-zone")]
-        private IWebElement _zoneInput;
+        //[FindsBy(How = How.CssSelector, Using = "select#input-payment-zone")]
+        //private IWebElement _zoneInput;
 
         protected OrderPage(IWebDriver webDriver) : base(webDriver)
         {
-            ZoneSelect = new SelectElement(_zoneInput);
+            //ZoneSelect = new SelectElement(_zoneInput);
         }
 
         [FindsBy(How = How.CssSelector, Using = "h1.category-header")]
@@ -35,8 +38,8 @@ namespace JustWatch.Selenium.Pages
         [FindsBy(How = How.CssSelector, Using = "input#input-payment-firstname")]
         public IWebElement FirstNameInput { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "input#input-payment-lastname")]
-        public IWebElement LastNameInput { get; set; }
+        //[FindsBy(How = How.CssSelector, Using = "input#input-payment-lastname")]
+        //public IWebElement LastNameInput { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "input#input-payment-email")]
         public IWebElement EmailInput { get; set; }
@@ -44,7 +47,7 @@ namespace JustWatch.Selenium.Pages
         [FindsBy(How = How.CssSelector, Using = "input#input-payment-telephone")]
         public IWebElement TelephoneInput { get; set; }
 
-        public SelectElement ZoneSelect { get; set; }
+        //public SelectElement ZoneSelect { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "input#input-payment-city")]
         public IWebElement CityInput { get; set; }
